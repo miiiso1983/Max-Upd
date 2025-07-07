@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - MaxCon ERP</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .login-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .login-body {
+            padding: 2rem;
+        }
+        
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .btn-login {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .tenant-info {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #667eea;
+        }
+        
+        .loading {
+            display: none;
+        }
+        
+        .alert {
+            border-radius: 10px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <h2 class="mb-0">
+                    <i class="bi bi-building"></i>
+                    MaxCon ERP
+                </h2>
+                <p class="mb-0 mt-2">نظام إدارة الموارد للشركات الدوائية</p>
+            </div>
+            
+            <div class="login-body">
+                <!-- Tenant Info -->
+                <div class="tenant-info" id="tenantInfo" style="display: none;">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-building text-primary me-2"></i>
+                        <div>
+                            <strong id="tenantName">اسم الشركة</strong>
+                            <br>
+                            <small class="text-muted" id="tenantDomain">domain.maxcon.com</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">البريد الإلكتروني</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-envelope"></i>
+                            </span>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password" class="form-label">كلمة المرور</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-lock"></i>
+                            </span>
+                            <input type="password" class="form-control" id="password" required>
+                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="rememberMe">
+                        <label class="form-check-label" for="rememberMe">
+                            تذكرني
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-login btn-primary w-100">
+                        <span class="login-text">تسجيل الدخول</span>
+                        <span class="loading">
+                            <i class="bi bi-arrow-clockwise spin"></i>
+                            جاري التحقق...
+                        </span>
+                    </button>
+                </form>
+                
+                <!-- Alert -->
+                <div id="alert" class="alert" style="display: none;" role="alert"></div>
+                
+                <!-- Links -->
+                <div class="text-center mt-3">
+                    <a href="#" class="text-decoration-none" onclick="showForgotPassword()">
+                        نسيت كلمة المرور؟
+                    </a>
+                </div>
+                
+                <hr class="my-4">
+                
+                <div class="text-center">
+                    <small class="text-muted">
+                        هل أنت مدير النظام؟
+                        <a href="/admin.html" class="text-decoration-none">دخول الإدارة</a>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Configuration
+        const API_BASE = '/api';
+        let currentTenant = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            detectTenant();
+            setupEventListeners();
+            checkExistingSession();
+        });
+
+        // Detect tenant from URL or subdomain
+        function detectTenant() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const tenantDomain = urlParams.get('tenant') || extractTenantFromDomain();
+            
+            if (tenantDomain) {
+                fetchTenantInfo(tenantDomain);
+            }
+        }
+
+        // Extract tenant from subdomain
+        function extractTenantFromDomain() {
+            const hostname = window.location.hostname;
+            const parts = hostname.split('.');
+            
+            // If subdomain exists and it's not 'www'
+            if (parts.length > 2 && parts[0] !== 'www') {
+                return parts[0];
+            }
+            
+            return null;
+        }
+
+        // Fetch tenant information
+        async function fetchTenantInfo(domain) {
+            try {
+                const response = await fetch(`${API_BASE}/tenant/info?domain=${domain}`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    currentTenant = data.tenant;
+                    displayTenantInfo(data.tenant);
+                }
+            } catch (error) {
+                console.log('Could not fetch tenant info:', error);
+            }
+        }
+
+        // Display tenant information
+        function displayTenantInfo(tenant) {
+            document.getElementById('tenantName').textContent = tenant.name;
+            document.getElementById('tenantDomain').textContent = tenant.domain + '.maxcon.com';
+            document.getElementById('tenantInfo').style.display = 'block';
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Login form
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            
+            // Password toggle
+            document.getElementById('togglePassword').addEventListener('click', togglePasswordVisibility);
+            
+            // Enter key on password field
+            document.getElementById('password').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleLogin(e);
+                }
+            });
+        }
+
+        // Handle login
+        async function handleLogin(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (!email || !password) {
+                showAlert('يرجى إدخال البريد الإلكتروني وكلمة المرور', 'danger');
+                return;
+            }
+            
+            setLoading(true);
+            hideAlert();
+            
+            try {
+                // Prepare headers with tenant information
+                const headers = {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                };
+
+                // Add tenant domain to headers if available
+                if (currentTenant?.domain) {
+                    headers['X-Tenant-Domain'] = currentTenant.domain;
+                }
+
+                const response = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify({
+                        email: email,
+                        password: password,
+                        tenant_domain: currentTenant?.domain || null
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Store token and user info
+                    localStorage.setItem('authToken', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    localStorage.setItem('tenant', JSON.stringify(data.tenant));
+                    
+                    showAlert('تم تسجيل الدخول بنجاح! جاري التوجيه...', 'success');
+                    
+                    // Redirect to tenant dashboard
+                    setTimeout(() => {
+                        window.location.href = '/tenant-dashboard.html';
+                    }, 1500);
+                    
+                } else {
+                    showAlert(data.message || 'خطأ في تسجيل الدخول', 'danger');
+                }
+                
+            } catch (error) {
+                showAlert('خطأ في الاتصال بالخادم', 'danger');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // Toggle password visibility
+        function togglePasswordVisibility() {
+            const passwordField = document.getElementById('password');
+            const toggleIcon = document.querySelector('#togglePassword i');
+            
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                toggleIcon.className = 'bi bi-eye-slash';
+            } else {
+                passwordField.type = 'password';
+                toggleIcon.className = 'bi bi-eye';
+            }
+        }
+
+        // Set loading state
+        function setLoading(loading) {
+            const loginText = document.querySelector('.login-text');
+            const loadingText = document.querySelector('.loading');
+            const submitBtn = document.querySelector('button[type="submit"]');
+            
+            if (loading) {
+                loginText.style.display = 'none';
+                loadingText.style.display = 'inline';
+                submitBtn.disabled = true;
+            } else {
+                loginText.style.display = 'inline';
+                loadingText.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        }
+
+        // Show alert
+        function showAlert(message, type) {
+            const alert = document.getElementById('alert');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            alert.style.display = 'block';
+        }
+
+        // Hide alert
+        function hideAlert() {
+            document.getElementById('alert').style.display = 'none';
+        }
+
+        // Check existing session
+        function checkExistingSession() {
+            const token = localStorage.getItem('authToken');
+            const user = localStorage.getItem('user');
+            
+            if (token && user) {
+                // Verify token is still valid
+                fetch(`${API_BASE}/auth/user`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Redirect to dashboard
+                        window.location.href = '/tenant-dashboard.html';
+                    } else {
+                        // Clear invalid session
+                        localStorage.removeItem('authToken');
+                        localStorage.removeItem('user');
+                        localStorage.removeItem('tenant');
+                    }
+                })
+                .catch(() => {
+                    // Clear session on error
+                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('tenant');
+                });
+            }
+        }
+
+        // Show forgot password (placeholder)
+        function showForgotPassword() {
+            alert('ميزة استعادة كلمة المرور ستكون متاحة قريباً');
+        }
+
+        // Add spinning animation for loading
+        const style = document.createElement('style');
+        style.textContent = `
+            .spin {
+                animation: spin 1s linear infinite;
+            }
+            
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

@@ -1,0 +1,314 @@
+/* MaxCon ERP - Purple Hover Effects CSS */
+/* Color: #6f42c1 (Purple) */
+
+/* Global Hover Effects */
+* {
+    transition: color 0.3s ease, background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Text Elements Hover */
+h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover {
+    color: #6f42c1 !important;
+    cursor: pointer;
+}
+
+p:hover, span:hover, div:hover {
+    color: #6f42c1 !important;
+    cursor: pointer;
+}
+
+/* Link Hover Effects */
+a:hover {
+    color: #6f42c1 !important;
+    text-decoration: none;
+}
+
+/* Button Hover Effects */
+.btn:hover, button:hover {
+    background-color: #6f42c1 !important;
+    color: white !important;
+    border-color: #6f42c1 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(111, 66, 193, 0.3);
+}
+
+/* Icon Hover Effects */
+i:hover {
+    color: #6f42c1 !important;
+    transform: scale(1.1);
+}
+
+/* Card Hover Effects */
+.card:hover, .bg-white:hover {
+    box-shadow: 0 10px 25px rgba(111, 66, 193, 0.15) !important;
+    transform: translateY(-3px);
+}
+
+.card:hover h1, .card:hover h2, .card:hover h3,
+.card:hover p, .card:hover span,
+.bg-white:hover h1, .bg-white:hover h2, .bg-white:hover h3,
+.bg-white:hover p, .bg-white:hover span {
+    color: #6f42c1 !important;
+}
+
+/* Sidebar Hover Effects */
+.sidebar nav a:hover,
+.sidebar-gradient nav a:hover,
+.master-admin-gradient nav a:hover {
+    color: #6f42c1 !important;
+    background: rgba(111, 66, 193, 0.1) !important;
+    transform: translateX(-5px);
+}
+
+.sidebar nav a:hover i,
+.sidebar-gradient nav a:hover i,
+.master-admin-gradient nav a:hover i {
+    color: #6f42c1 !important;
+}
+
+/* Table Hover Effects */
+table tr:hover {
+    background: rgba(111, 66, 193, 0.05) !important;
+}
+
+table tr:hover td, table tr:hover th {
+    color: #6f42c1 !important;
+}
+
+/* Form Elements Hover */
+input:hover, select:hover, textarea:hover {
+    border-color: #6f42c1 !important;
+    box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.1);
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #6f42c1 !important;
+    box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.2);
+}
+
+/* Badge Hover Effects */
+.badge:hover, .status-badge:hover {
+    background: #6f42c1 !important;
+    color: white !important;
+}
+
+/* Navigation Hover Effects */
+.nav-link:hover {
+    color: #6f42c1 !important;
+    background: rgba(111, 66, 193, 0.1) !important;
+}
+
+/* Dropdown Hover Effects */
+.dropdown-item:hover {
+    background: #6f42c1 !important;
+    color: white !important;
+}
+
+/* Progress Bar Hover Effects */
+.progress-bar:hover {
+    background: #6f42c1 !important;
+}
+
+/* Alert Hover Effects */
+.alert:hover {
+    border-color: #6f42c1 !important;
+    box-shadow: 0 4px 12px rgba(111, 66, 193, 0.2);
+}
+
+/* Modal Hover Effects */
+.modal-header:hover {
+    background: #6f42c1 !important;
+    color: white !important;
+}
+
+/* Pagination Hover Effects */
+.pagination .page-link:hover {
+    background: #6f42c1 !important;
+    color: white !important;
+    border-color: #6f42c1 !important;
+}
+
+/* Breadcrumb Hover Effects */
+.breadcrumb-item:hover {
+    color: #6f42c1 !important;
+}
+
+/* List Group Hover Effects */
+.list-group-item:hover {
+    background: rgba(111, 66, 193, 0.1) !important;
+    color: #6f42c1 !important;
+}
+
+/* Tab Hover Effects */
+.nav-tabs .nav-link:hover {
+    color: #6f42c1 !important;
+    border-color: #6f42c1 !important;
+}
+
+/* Accordion Hover Effects */
+.accordion-button:hover {
+    background: rgba(111, 66, 193, 0.1) !important;
+    color: #6f42c1 !important;
+}
+
+/* Tooltip Hover Effects */
+.tooltip:hover {
+    background: #6f42c1 !important;
+}
+
+/* Popover Hover Effects */
+.popover:hover {
+    border-color: #6f42c1 !important;
+}
+
+/* Custom Classes */
+.hover-purple:hover {
+    color: #6f42c1 !important;
+}
+
+.hover-purple-bg:hover {
+    background: #6f42c1 !important;
+    color: white !important;
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+}
+
+.hover-glow:hover {
+    box-shadow: 0 0 20px rgba(111, 66, 193, 0.5);
+}
+
+/* Specific Component Hover Effects */
+
+/* Dashboard Cards */
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(111, 66, 193, 0.2);
+}
+
+.dashboard-card:hover .card-icon {
+    background: #6f42c1 !important;
+    color: white !important;
+}
+
+/* Statistics Cards */
+.stat-card:hover {
+    border-left-color: #6f42c1 !important;
+}
+
+.stat-card:hover .stat-number {
+    color: #6f42c1 !important;
+}
+
+/* Chart Containers */
+.chart-container:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 25px rgba(111, 66, 193, 0.15);
+}
+
+/* Invoice Elements */
+.invoice-item:hover {
+    background: rgba(111, 66, 193, 0.05) !important;
+}
+
+.invoice-total:hover {
+    color: #6f42c1 !important;
+    font-weight: bold;
+}
+
+/* Product Cards */
+.product-card:hover {
+    border-color: #6f42c1 !important;
+    transform: translateY(-3px);
+}
+
+.product-card:hover .product-name {
+    color: #6f42c1 !important;
+}
+
+/* Customer Cards */
+.customer-card:hover {
+    box-shadow: 0 8px 25px rgba(111, 66, 193, 0.15);
+}
+
+.customer-card:hover .customer-name {
+    color: #6f42c1 !important;
+}
+
+/* Report Elements */
+.report-section:hover {
+    border-left-color: #6f42c1 !important;
+}
+
+.report-title:hover {
+    color: #6f42c1 !important;
+}
+
+/* Search Elements */
+.search-input:hover {
+    border-color: #6f42c1 !important;
+    box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.1);
+}
+
+/* Filter Elements */
+.filter-option:hover {
+    background: #6f42c1 !important;
+    color: white !important;
+}
+
+/* Action Buttons */
+.action-btn:hover {
+    background: #6f42c1 !important;
+    color: white !important;
+    transform: scale(1.1);
+}
+
+/* Status Indicators */
+.status-indicator:hover {
+    background: #6f42c1 !important;
+    transform: scale(1.2);
+}
+
+/* Notification Elements */
+.notification:hover {
+    background: rgba(111, 66, 193, 0.1) !important;
+    border-left-color: #6f42c1 !important;
+}
+
+/* Menu Items */
+.menu-item:hover {
+    background: rgba(111, 66, 193, 0.1) !important;
+    color: #6f42c1 !important;
+    padding-right: 20px;
+}
+
+/* Footer Elements */
+.footer-link:hover {
+    color: #6f42c1 !important;
+}
+
+/* Print Media - Remove Hover Effects */
+@media print {
+    *:hover {
+        color: inherit !important;
+        background-color: inherit !important;
+        transform: none !important;
+        box-shadow: none !important;
+    }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .hover-scale:hover {
+        transform: scale(1.02);
+    }
+    
+    .hover-lift:hover {
+        transform: translateY(-2px);
+    }
+}

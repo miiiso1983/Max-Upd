@@ -1,0 +1,11 @@
+{
+    "name": "BackupManagement",
+    "alias": "backupmanagement",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\BackupManagement\\Providers\\BackupManagementServiceProvider"
+    ],
+    "files": []
+}

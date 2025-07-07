@@ -1,0 +1,11 @@
+{
+    "name": "BackupManagement",
+    "alias": "backupmanagement",
+    "description": "Tenant Data Backup and Restore Management System",
+    "keywords": ["backup", "restore", "tenant", "data", "management"],
+    "priority": 0,
+    "providers": [
+        "Modules\\BackupManagement\\app\\Providers\\BackupManagementServiceProvider"
+    ],
+    "files": []
+}

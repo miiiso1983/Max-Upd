@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MaxCon ERP - Super Admin Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            color: #0d6efd !important;
+        }
+        .card {
+            border: none;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            border-radius: 0.5rem;
+        }
+        .card-header {
+            background-color: #fff;
+            border-bottom: 1px solid #dee2e6;
+            font-weight: 600;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .stat-card .card-body {
+            padding: 1.5rem;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        .tenant-card {
+            transition: transform 0.2s;
+        }
+        .tenant-card:hover {
+            transform: translateY(-2px);
+        }
+        .status-badge {
+            font-size: 0.75rem;
+        }
+        .arabic-text {
+            font-family: 'Arial', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-building"></i>
+                MaxCon ERP - لوحة الإدارة العامة
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="#" id="logoutBtn">
+                    <i class="bi bi-box-arrow-right"></i>
+                    تسجيل الخروج
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4">
+        <!-- Login Form (initially visible) -->
+        <div id="loginForm" class="row justify-content-center">
+            <div class="col-md-6 col-lg-4">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h4 class="arabic-text">تسجيل الدخول - Super Admin</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="loginFormElement">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">البريد الإلكتروني</label>
+                                <input type="email" class="form-control" id="email" value="admin@maxcon-erp.com" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">كلمة المرور</label>
+                                <input type="password" class="form-control" id="password" value="MaxCon@2025" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-box-arrow-in-right"></i>
+                                تسجيل الدخول
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard (initially hidden) -->
+        <div id="dashboard" style="display: none;">
+            <!-- Statistics Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card stat-card">
+                        <div class="card-body text-center">
+                            <i class="bi bi-building fs-1 mb-2"></i>
+                            <div class="stat-number" id="totalTenants">0</div>
+                            <div>إجمالي المستأجرين</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stat-card">
+                        <div class="card-body text-center">
+                            <i class="bi bi-check-circle fs-1 mb-2"></i>
+                            <div class="stat-number" id="activeTenants">0</div>
+                            <div>المستأجرين النشطين</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stat-card">
+                        <div class="card-body text-center">
+                            <i class="bi bi-exclamation-triangle fs-1 mb-2"></i>
+                            <div class="stat-number" id="expiredLicenses">0</div>
+                            <div>التراخيص المنتهية</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stat-card">
+                        <div class="card-body text-center">
+                            <i class="bi bi-people fs-1 mb-2"></i>
+                            <div class="stat-number" id="totalUsers">0</div>
+                            <div>إجمالي المستخدمين</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tenants Management -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">إدارة المستأجرين</h5>
+                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addTenantModal">
+                                <i class="bi bi-plus"></i>
+                                إضافة مستأجر جديد
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>الاسم</th>
+                                            <th>النوع</th>
+                                            <th>المحافظة</th>
+                                            <th>المستخدمين</th>
+                                            <th>انتهاء الترخيص</th>
+                                            <th>الحالة</th>
+                                            <th>الإجراءات</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tenantsTable">
+                                        <!-- Tenants will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Tenant Modal -->
+    <div class="modal fade" id="addTenantModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">إضافة مستأجر جديد</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addTenantForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="tenantName" class="form-label">اسم المستأجر</label>
+                                    <input type="text" class="form-control" id="tenantName" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="tenantDomain" class="form-label">النطاق</label>
+                                    <input type="text" class="form-control" id="tenantDomain" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="companyName" class="form-label">اسم الشركة</label>
+                                    <input type="text" class="form-control" id="companyName" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="companyType" class="form-label">نوع الشركة</label>
+                                    <select class="form-control" id="companyType" required>
+                                        <option value="pharmacy">صيدلية</option>
+                                        <option value="medical_distributor">موزع طبي</option>
+                                        <option value="clinic">عيادة</option>
+                                        <option value="hospital">مستشفى</option>
+                                        <option value="other">أخرى</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="contactPerson" class="form-label">الشخص المسؤول</label>
+                                    <input type="text" class="form-control" id="contactPerson" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="tenantEmail" class="form-label">البريد الإلكتروني</label>
+                                    <input type="email" class="form-control" id="tenantEmail" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="tenantPhone" class="form-label">رقم الهاتف</label>
+                                    <input type="text" class="form-control" id="tenantPhone" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="maxUsers" class="form-label">الحد الأقصى للمستخدمين</label>
+                                    <input type="number" class="form-control" id="maxUsers" value="10" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tenantAddress" class="form-label">العنوان</label>
+                            <textarea class="form-control" id="tenantAddress" rows="2" required></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="city" class="form-label">المدينة</label>
+                                    <input type="text" class="form-control" id="city" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="governorate" class="form-label">المحافظة</label>
+                                    <select class="form-control" id="governorate" required>
+                                        <option value="Baghdad">بغداد</option>
+                                        <option value="Basra">البصرة</option>
+                                        <option value="Nineveh">نينوى</option>
+                                        <option value="Erbil">أربيل</option>
+                                        <option value="Sulaymaniyah">السليمانية</option>
+                                        <option value="Dohuk">دهوك</option>
+                                        <option value="Anbar">الأنبار</option>
+                                        <option value="Babylon">بابل</option>
+                                        <option value="Karbala">كربلاء</option>
+                                        <option value="Najaf">النجف</option>
+                                        <option value="Qadisiyyah">القادسية</option>
+                                        <option value="Muthanna">المثنى</option>
+                                        <option value="Dhi Qar">ذي قار</option>
+                                        <option value="Maysan">ميسان</option>
+                                        <option value="Wasit">واسط</option>
+                                        <option value="Saladin">صلاح الدين</option>
+                                        <option value="Diyala">ديالى</option>
+                                        <option value="Kirkuk">كركوك</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Admin User Section -->
+                        <hr class="my-4">
+                        <h6 class="mb-3">معلومات مدير النظام (اختياري)</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="adminName" class="form-label">اسم المدير</label>
+                                    <input type="text" class="form-control" id="adminName" placeholder="اتركه فارغاً لاستخدام الشخص المسؤول">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="adminEmail" class="form-label">البريد الإلكتروني للمدير</label>
+                                    <input type="email" class="form-control" id="adminEmail" placeholder="اتركه فارغاً لاستخدام البريد الرئيسي">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="adminPassword" class="form-label">كلمة المرور</label>
+                                    <input type="password" class="form-control" id="adminPassword" placeholder="اتركه فارغاً لإنشاء كلمة مرور تلقائية">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="adminPasswordConfirm" class="form-label">تأكيد كلمة المرور</label>
+                                    <input type="password" class="form-control" id="adminPasswordConfirm">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="alert alert-info">
+                            <small>
+                                <i class="bi bi-info-circle"></i>
+                                إذا تركت حقول المدير فارغة، سيتم إنشاء حساب مدير تلقائياً باستخدام معلومات الشخص المسؤول وكلمة مرور عشوائية.
+                            </small>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" id="saveTenantBtn">حفظ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let authToken = localStorage.getItem('authToken');
+        const API_BASE = '/api';
+
+        // Check if user is already logged in
+        if (authToken) {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            loadDashboard();
+        }
+
+        // Handle authentication errors
+        function handleAuthError() {
+            alert('انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى.');
+            authToken = null;
+            localStorage.removeItem('authToken');
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('dashboard').style.display = 'none';
+        }
+
+        // Format date in Gregorian calendar
+        function formatDate(dateString, includeTime = false) {
+            if (!dateString) return 'غير محدد';
+
+            const date = new Date(dateString);
+            const options = {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                calendar: 'gregory' // Force Gregorian calendar
+            };
+
+            if (includeTime) {
+                options.hour = '2-digit';
+                options.minute = '2-digit';
+                options.second = '2-digit';
+                options.hour12 = false; // 24-hour format
+            }
+
+            return date.toLocaleDateString('en-GB', options) +
+                   (includeTime ? ' ' + date.toLocaleTimeString('en-GB', {hour12: false}) : '');
+        }
+
+        // Format date with Arabic month names for better readability
+        function formatDateArabic(dateString, includeTime = false) {
+            if (!dateString) return 'غير محدد';
+
+            const date = new Date(dateString);
+            const months = [
+                'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
+                'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'
+            ];
+
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = months[date.getMonth()];
+            const year = date.getFullYear();
+
+            let formatted = `${day} ${month} ${year}`;
+
+            if (includeTime) {
+                const hours = date.getHours().toString().padStart(2, '0');
+                const minutes = date.getMinutes().toString().padStart(2, '0');
+                formatted += ` - ${hours}:${minutes}`;
+            }
+
+            return formatted;
+        }
+
+        // Login functionality
+        document.getElementById('loginFormElement').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                const response = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    authToken = data.token;
+                    localStorage.setItem('authToken', data.token);
+                    document.getElementById('loginForm').style.display = 'none';
+                    document.getElementById('dashboard').style.display = 'block';
+                    loadDashboard();
+                } else {
+                    alert('خطأ في تسجيل الدخول: ' + (data.message || 'خطأ غير معروف'));
+                }
+            } catch (error) {
+                alert('خطأ في الاتصال: ' + error.message);
+            }
+        });
+
+        // Load dashboard data
+        async function loadDashboard() {
+            try {
+                // Load statistics
+                const statsResponse = await fetch(`${API_BASE}/super-admin/dashboard`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (statsResponse.ok) {
+                    const stats = await statsResponse.json();
+                    document.getElementById('totalTenants').textContent = stats.stats.total_tenants;
+                    document.getElementById('activeTenants').textContent = stats.stats.active_tenants;
+                    document.getElementById('expiredLicenses').textContent = stats.stats.expired_licenses;
+                    document.getElementById('totalUsers').textContent = stats.stats.total_users;
+                } else if (statsResponse.status === 401) {
+                    handleAuthError();
+                }
+                
+                // Load tenants
+                loadTenants();
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+            }
+        }
+
+        // Load tenants
+        async function loadTenants() {
+            try {
+                const response = await fetch(`${API_BASE}/super-admin/tenants`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    displayTenants(data.tenants.data);
+                } else if (response.status === 401) {
+                    handleAuthError();
+                }
+            } catch (error) {
+                console.error('Error loading tenants:', error);
+            }
+        }
+
+        // Display tenants in table
+        function displayTenants(tenants) {
+            const tbody = document.getElementById('tenantsTable');
+            tbody.innerHTML = '';
+            
+            tenants.forEach(tenant => {
+                const row = document.createElement('tr');
+                const statusBadge = tenant.is_active ? 
+                    '<span class="badge bg-success status-badge">نشط</span>' : 
+                    '<span class="badge bg-danger status-badge">غير نشط</span>';
+                
+                const companyTypeMap = {
+                    'pharmacy': 'صيدلية',
+                    'medical_distributor': 'موزع طبي',
+                    'clinic': 'عيادة',
+                    'hospital': 'مستشفى',
+                    'other': 'أخرى'
+                };
+                
+                row.innerHTML = `
+                    <td>${tenant.name}</td>
+                    <td>${companyTypeMap[tenant.company_type] || tenant.company_type}</td>
+                    <td>${tenant.governorate}</td>
+                    <td>${tenant.statistics.total_users}/${tenant.max_users}</td>
+                    <td>${formatDateArabic(tenant.license_expires_at)}</td>
+                    <td>${statusBadge}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" onclick="viewTenant(${tenant.id})">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-warning" onclick="editTenant(${tenant.id})">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Add/Edit tenant functionality
+        document.getElementById('saveTenantBtn').addEventListener('click', async () => {
+            const mode = document.getElementById('saveTenantBtn').getAttribute('data-mode') || 'create';
+            const tenantId = document.getElementById('saveTenantBtn').getAttribute('data-tenant-id');
+
+            const formData = {
+                name: document.getElementById('tenantName').value,
+                company_name: document.getElementById('companyName').value,
+                company_type: document.getElementById('companyType').value,
+                contact_person: document.getElementById('contactPerson').value,
+                email: document.getElementById('tenantEmail').value,
+                phone: document.getElementById('tenantPhone').value,
+                address: document.getElementById('tenantAddress').value,
+                city: document.getElementById('city').value,
+                governorate: document.getElementById('governorate').value,
+                max_users: parseInt(document.getElementById('maxUsers').value)
+            };
+
+            // Add domain and license expiry only for create mode
+            if (mode === 'create') {
+                formData.domain = document.getElementById('tenantDomain').value;
+                formData.license_expires_at = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+
+                // Add admin user fields if provided
+                const adminName = document.getElementById('adminName').value;
+                const adminEmail = document.getElementById('adminEmail').value;
+                const adminPassword = document.getElementById('adminPassword').value;
+                const adminPasswordConfirm = document.getElementById('adminPasswordConfirm').value;
+
+                if (adminName) formData.admin_name = adminName;
+                if (adminEmail) formData.admin_email = adminEmail;
+                if (adminPassword) {
+                    if (adminPassword !== adminPasswordConfirm) {
+                        alert('كلمات المرور غير متطابقة');
+                        return;
+                    }
+                    formData.admin_password = adminPassword;
+                }
+            }
+
+            try {
+                const url = mode === 'edit' ? `${API_BASE}/super-admin/tenants/${tenantId}` : `${API_BASE}/super-admin/tenants`;
+                const method = mode === 'edit' ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    let successMessage = mode === 'edit' ? 'تم تحديث المستأجر بنجاح' : 'تم إنشاء المستأجر بنجاح';
+
+                    // Show admin credentials if auto-generated
+                    if (data.admin_credentials) {
+                        successMessage += '\n\nبيانات تسجيل الدخول للمدير:\n';
+                        successMessage += 'البريد الإلكتروني: ' + data.admin_credentials.email + '\n';
+                        successMessage += 'كلمة المرور: ' + data.admin_credentials.password + '\n';
+                        successMessage += '\nيرجى حفظ هذه البيانات ومشاركتها مع مدير المستأجر.';
+                    }
+
+                    alert(successMessage);
+                    bootstrap.Modal.getInstance(document.getElementById('addTenantModal')).hide();
+                    document.getElementById('addTenantForm').reset();
+                    loadTenants();
+                    loadDashboard();
+                } else if (response.status === 401) {
+                    handleAuthError();
+                } else {
+                    const errorMessage = mode === 'edit' ? 'خطأ في تحديث المستأجر: ' : 'خطأ في إنشاء المستأجر: ';
+                    alert(errorMessage + (data.message || 'خطأ غير معروف'));
+                }
+            } catch (error) {
+                alert('خطأ في الاتصال: ' + error.message);
+            }
+        });
+
+        // View tenant details function
+        async function viewTenant(id) {
+            try {
+                const response = await fetch(`${API_BASE}/super-admin/tenants/${id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    showTenantDetails(data.tenant || data);
+                } else if (response.status === 401) {
+                    handleAuthError();
+                } else {
+                    const error = await response.json();
+                    alert('خطأ في جلب بيانات المستأجر: ' + (error.message || 'خطأ غير معروف'));
+                }
+            } catch (error) {
+                alert('خطأ في الاتصال: ' + error.message);
+            }
+        }
+
+        // Edit tenant function
+        async function editTenant(id) {
+            try {
+                const response = await fetch(`${API_BASE}/super-admin/tenants/${id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    populateEditForm(data.tenant || data);
+                    // Show the add tenant modal for editing
+                    const modal = new bootstrap.Modal(document.getElementById('addTenantModal'));
+                    modal.show();
+                } else if (response.status === 401) {
+                    handleAuthError();
+                } else {
+                    const error = await response.json();
+                    alert('خطأ في جلب بيانات المستأجر: ' + (error.message || 'خطأ غير معروف'));
+                }
+            } catch (error) {
+                alert('خطأ في الاتصال: ' + error.message);
+            }
+        }
+
+        // Show tenant details in a modal
+        function showTenantDetails(tenant) {
+            const detailsHtml = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-primary">المعلومات الأساسية</h6>
+                        <table class="table table-sm">
+                            <tr><td><strong>الاسم:</strong></td><td>${tenant.name}</td></tr>
+                            <tr><td><strong>النطاق:</strong></td><td>${tenant.domain}</td></tr>
+                            <tr><td><strong>اسم الشركة:</strong></td><td>${tenant.company_name}</td></tr>
+                            <tr><td><strong>نوع الشركة:</strong></td><td>${getCompanyTypeLabel(tenant.company_type)}</td></tr>
+                            <tr><td><strong>الشخص المسؤول:</strong></td><td>${tenant.contact_person}</td></tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-primary">معلومات الاتصال</h6>
+                        <table class="table table-sm">
+                            <tr><td><strong>البريد الإلكتروني:</strong></td><td>${tenant.email}</td></tr>
+                            <tr><td><strong>الهاتف:</strong></td><td>${tenant.phone}</td></tr>
+                            <tr><td><strong>العنوان:</strong></td><td>${tenant.address}</td></tr>
+                            <tr><td><strong>المدينة:</strong></td><td>${tenant.city}</td></tr>
+                            <tr><td><strong>المحافظة:</strong></td><td>${tenant.governorate}</td></tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <h6 class="text-primary">معلومات الترخيص</h6>
+                        <table class="table table-sm">
+                            <tr><td><strong>مفتاح الترخيص:</strong></td><td><code>${tenant.license_key}</code></td></tr>
+                            <tr><td><strong>تاريخ الانتهاء:</strong></td><td>${formatDateArabic(tenant.license_expires_at)}</td></tr>
+                            <tr><td><strong>الحد الأقصى للمستخدمين:</strong></td><td>${tenant.max_users}</td></tr>
+                            <tr><td><strong>الحالة:</strong></td><td>${tenant.is_active ? '<span class="badge bg-success">نشط</span>' : '<span class="badge bg-danger">غير نشط</span>'}</td></tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-primary">الإحصائيات</h6>
+                        <table class="table table-sm">
+                            <tr><td><strong>إجمالي المستخدمين:</strong></td><td>${tenant.statistics?.total_users || 0}</td></tr>
+                            <tr><td><strong>المستخدمين النشطين:</strong></td><td>${tenant.statistics?.active_users || 0}</td></tr>
+                            <tr><td><strong>حالة الترخيص:</strong></td><td>${tenant.statistics?.license_status === 'valid' ? '<span class="badge bg-success">صالح</span>' : '<span class="badge bg-warning">منتهي</span>'}</td></tr>
+                            <tr><td><strong>قاعدة البيانات:</strong></td><td><code>${tenant.database}</code></td></tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <h6 class="text-primary">معلومات إضافية</h6>
+                        <table class="table table-sm">
+                            <tr><td><strong>تاريخ الإنشاء:</strong></td><td>${formatDateArabic(tenant.created_at, true)}</td></tr>
+                            <tr><td><strong>آخر تحديث:</strong></td><td>${formatDateArabic(tenant.updated_at, true)}</td></tr>
+                            <tr><td><strong>منشئ المستأجر:</strong></td><td>${tenant.creator?.name || 'غير معروف'}</td></tr>
+                        </table>
+                    </div>
+                </div>
+            `;
+
+            // Create or update tenant details modal
+            let modal = document.getElementById('tenantDetailsModal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.className = 'modal fade';
+                modal.id = 'tenantDetailsModal';
+                modal.innerHTML = `
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">تفاصيل المستأجر</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body" id="tenantDetailsBody">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                                <button type="button" class="btn btn-primary" onclick="editTenantFromDetails(${tenant.id})" data-bs-dismiss="modal">تعديل</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+            }
+
+            document.getElementById('tenantDetailsBody').innerHTML = detailsHtml;
+            const bsModal = new bootstrap.Modal(modal);
+            bsModal.show();
+        }
+
+        // Edit tenant from details modal
+        function editTenantFromDetails(id) {
+            // Close the details modal first
+            const detailsModal = bootstrap.Modal.getInstance(document.getElementById('tenantDetailsModal'));
+            if (detailsModal) {
+                detailsModal.hide();
+            }
+
+            // Then call the regular edit function
+            setTimeout(() => {
+                editTenant(id);
+            }, 300); // Small delay to ensure the modal is closed
+        }
+
+        // Populate edit form with tenant data
+        function populateEditForm(tenant) {
+            document.getElementById('tenantName').value = tenant.name;
+            document.getElementById('tenantDomain').value = tenant.domain;
+            document.getElementById('companyName').value = tenant.company_name;
+            document.getElementById('companyType').value = tenant.company_type;
+            document.getElementById('contactPerson').value = tenant.contact_person;
+            document.getElementById('tenantEmail').value = tenant.email;
+            document.getElementById('tenantPhone').value = tenant.phone;
+            document.getElementById('tenantAddress').value = tenant.address;
+            document.getElementById('city').value = tenant.city;
+            document.getElementById('governorate').value = tenant.governorate;
+            document.getElementById('maxUsers').value = tenant.max_users;
+
+            // Make domain field readonly during edit
+            document.getElementById('tenantDomain').setAttribute('readonly', true);
+            document.getElementById('tenantDomain').classList.add('bg-light');
+
+            // Change modal title and button text for editing
+            document.querySelector('#addTenantModal .modal-title').textContent = 'تعديل المستأجر';
+            document.getElementById('saveTenantBtn').textContent = 'حفظ التعديلات';
+
+            // Store tenant ID for updating
+            document.getElementById('saveTenantBtn').setAttribute('data-tenant-id', tenant.id);
+            document.getElementById('saveTenantBtn').setAttribute('data-mode', 'edit');
+        }
+
+        // Helper function to get company type label
+        function getCompanyTypeLabel(type) {
+            const types = {
+                'pharmacy': 'صيدلية',
+                'medical_distributor': 'موزع أدوية',
+                'clinic': 'عيادة',
+                'hospital': 'مستشفى',
+                'other': 'أخرى'
+            };
+            return types[type] || type;
+        }
+
+        // Reset form when adding new tenant
+        document.getElementById('addTenantBtn').addEventListener('click', () => {
+            document.getElementById('addTenantForm').reset();
+
+            // Make domain field editable again
+            document.getElementById('tenantDomain').removeAttribute('readonly');
+            document.getElementById('tenantDomain').classList.remove('bg-light');
+
+            document.querySelector('#addTenantModal .modal-title').textContent = 'إضافة مستأجر جديد';
+            document.getElementById('saveTenantBtn').textContent = 'حفظ';
+            document.getElementById('saveTenantBtn').removeAttribute('data-tenant-id');
+            document.getElementById('saveTenantBtn').setAttribute('data-mode', 'create');
+        });
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            authToken = null;
+            localStorage.removeItem('authToken');
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('dashboard').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
