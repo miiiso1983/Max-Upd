@@ -65,6 +65,11 @@ fi
 print_status "تثبيت تبعيات PHP..."
 composer install --optimize-autoloader --no-dev
 
+# Fix Ignition issue
+print_status "إصلاح مشكلة Ignition..."
+php artisan config:clear
+php artisan cache:clear
+
 if [ $? -ne 0 ]; then
     print_error "فشل في تثبيت تبعيات PHP"
     exit 1
