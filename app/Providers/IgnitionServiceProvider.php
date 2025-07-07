@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Log;
 
 class IgnitionServiceProvider extends ServiceProvider
 {
