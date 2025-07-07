@@ -160,33 +160,8 @@ return [
     */
 
     'recorders' => [
-        Spatie\LaravelIgnition\Recorders\DumpRecorder\DumpRecorder::class => [
-            'enabled' => env('IGNITION_RECORD_DUMPS', true),
-            'max_dumps' => env('IGNITION_RECORD_DUMPS_MAX_DUMPS', 200),
-        ],
-
-        Spatie\LaravelIgnition\Recorders\JobRecorder\JobRecorder::class => [
-            'enabled' => env('IGNITION_RECORD_JOBS', true),
-            'max_jobs' => env('IGNITION_RECORD_JOBS_MAX_JOBS', 50),
-        ],
-
-        Spatie\LaravelIgnition\Recorders\LogRecorder\LogRecorder::class => [
-            'enabled' => env('IGNITION_RECORD_LOGS', true),
-            'max_logs' => env('IGNITION_RECORD_LOGS_MAX_LOGS', 200),
-        ],
-
-        Spatie\LaravelIgnition\Recorders\QueryRecorder\QueryRecorder::class => [
-            'enabled' => env('IGNITION_RECORD_QUERIES', true),
-            'max_queries' => env('IGNITION_RECORD_QUERIES_MAX_QUERIES', 200),
-            'report_slow_queries' => env('IGNITION_RECORD_QUERIES_REPORT_SLOW_QUERIES', true),
-            'slow_query_threshold' => env('IGNITION_RECORD_QUERIES_SLOW_QUERY_THRESHOLD', 500),
-            'report_bindings' => env('IGNITION_RECORD_QUERIES_REPORT_BINDINGS', true),
-        ],
-
-        Spatie\LaravelIgnition\Recorders\RequestRecorder\RequestRecorder::class => [
-            'enabled' => env('IGNITION_RECORD_REQUESTS', true),
-            'max_requests' => env('IGNITION_RECORD_REQUESTS_MAX_REQUESTS', 10),
-        ],
+        // Only enable recorders if Ignition classes exist
+        // This prevents errors when the package is not installed
     ],
 
     /*

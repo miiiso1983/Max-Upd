@@ -23,7 +23,8 @@
         'md' => 'h-11 text-sm',
         'lg' => 'h-12 text-base'
     ];
-    $classes = 'modern-select w-full ' . ($sizeClasses[$size ?? 'md'] ?? $sizeClasses['md']) . ' ' . ($class ?? '');
+    $selectedSize = $size ?? 'md';
+    $classes = 'modern-select w-full ' . ($sizeClasses[$selectedSize] ?? $sizeClasses['md']) . ' ' . ($class ?? '');
 @endphp
 
 <div class="relative">

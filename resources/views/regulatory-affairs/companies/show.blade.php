@@ -1,21 +1,15 @@
-{{--
-    @var \App\Modules\RegulatoryAffairs\Models\PharmaceuticalCompany $company
-    @var array $stats
-    @var \Illuminate\Database\Eloquent\Collection $recentProducts
-    @var \Illuminate\Database\Eloquent\Collection $recentInspections
-    @var array $alerts
---}}
 @php
-    /** @var \App\Modules\RegulatoryAffairs\Models\PharmaceuticalCompany $company */
-    /** @var array $stats */
-    /** @var \Illuminate\Database\Eloquent\Collection $recentProducts */
-    /** @var \Illuminate\Database\Eloquent\Collection $recentInspections */
-    /** @var array $alerts */
+    // Ensure variables are properly typed
+    $company = $company ?? new \stdClass();
+    $stats = $stats ?? [];
+    $recentProducts = $recentProducts ?? collect();
+    $recentInspections = $recentInspections ?? collect();
+    $alerts = $alerts ?? [];
 @endphp
 @extends('layouts.app')
 
-@section('title', $company->display_name . ' - MaxCon ERP')
-@section('page-title', $company->display_name)
+@section('title', ($company->display_name ?? 'شركة') . ' - MaxCon ERP')
+@section('page-title', $company->display_name ?? 'شركة')
 
 @section('content')
 <div class="space-y-6">
@@ -23,16 +17,16 @@
     <div class="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg p-6 text-white">
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-2xl font-bold mb-2">{{ $company->display_name }}</h1>
-                <p class="text-blue-100">{{ $company->display_trade_name }} - {{ $company->company_type_arabic }}</p>
+                <h1 class="text-2xl font-bold mb-2">{{ $company->display_name ?? 'اسم الشركة' }}</h1>
+                <p class="text-blue-100">{{ ($company->display_trade_name ?? '') }} - {{ ($company->company_type_arabic ?? '') }}</p>
                 <div class="flex items-center mt-2 space-x-4 space-x-reverse">
                     <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
-                        @if($company->status === 'active') bg-green-100 text-green-800
-                        @elseif($company->status === 'inactive') bg-red-100 text-red-800
+                        @if(($company->status ?? '') === 'active') bg-green-100 text-green-800
+                        @elseif(($company->status ?? '') === 'inactive') bg-red-100 text-red-800
                         @else bg-yellow-100 text-yellow-800 @endif">
-                        {{ $company->status_arabic }}
+                        {{ $company->status_arabic ?? 'غير محدد' }}
                     </span>
-                    <span class="text-blue-100">{{ $company->registration_number }}</span>
+                    <span class="text-blue-100">{{ $company->registration_number ?? 'غير محدد' }}</span>
                 </div>
             </div>
             <div class="flex items-center space-x-3 space-x-reverse">
