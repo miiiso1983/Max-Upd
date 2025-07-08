@@ -25,7 +25,14 @@ class ProcessScheduledBackups extends Command
     public function __construct()
     {
         parent::__construct();
-        $this->schedulerService = new BackupSchedulerService();
+    }
+
+    protected function getSchedulerService()
+    {
+        if (!$this->schedulerService) {
+            $this->schedulerService = new BackupSchedulerService();
+        }
+        return $this->schedulerService;
     }
 
     /**
@@ -89,7 +96,7 @@ class ProcessScheduledBackups extends Command
     {
         $this->info('Processing due backup schedules...');
         
-        $results = $this->schedulerService->processDueSchedules();
+        $results = $this->getSchedulerService()->processDueSchedules();
         
         $this->info("Backup processing completed:");
         $this->info("- Processed: {$results['processed']}");
@@ -102,7 +109,7 @@ class ProcessScheduledBackups extends Command
 
         // Update next run times for all schedules
         $this->info('Updating schedule next run times...');
-        $updated = $this->schedulerService->updateScheduleNextRuns();
+        $updated = $this->getSchedulerService()->updateScheduleNextRuns();
         $this->info("Updated {$updated} schedule next run times.");
     }
 }

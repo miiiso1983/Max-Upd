@@ -18,7 +18,7 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         // Check if user is super admin and redirect to master admin dashboard
-        if (auth()->user()->hasRole('super_admin') || auth()->user()->is_super_admin) {
+        if (auth()->user()->hasRole('super-admin') || auth()->user()->hasRole('super_admin') || auth()->user()->is_super_admin) {
             return redirect()->route('master-admin.dashboard');
         }
 

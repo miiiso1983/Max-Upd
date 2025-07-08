@@ -68,7 +68,7 @@ return [
     |
     */
 
-    'register_commands' => env('IGNITION_REGISTER_COMMANDS', app()->environment('local')),
+    'register_commands' => env('IGNITION_REGISTER_COMMANDS', false),
 
     /*
     |--------------------------------------------------------------------------

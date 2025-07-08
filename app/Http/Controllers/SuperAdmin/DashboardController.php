@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('role:super-admin|super_admin');
+    }
 
     /**
      * Display the super admin dashboard

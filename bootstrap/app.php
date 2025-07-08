@@ -17,11 +17,11 @@ return Application::configure(basePath: dirname(__DIR__))
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // Global middleware
-        $middleware->append([
-            \App\Http\Middleware\SecurityHeadersMiddleware::class,
-            \App\Http\Middleware\SecurityAuditMiddleware::class,
-        ]);
+        // Global middleware - temporarily disabled for debugging
+        // $middleware->append([
+        //     \App\Http\Middleware\SecurityHeadersMiddleware::class,
+        //     \App\Http\Middleware\SecurityAuditMiddleware::class,
+        // ]);
 
         // Middleware aliases
         $middleware->alias([

@@ -21,7 +21,7 @@ class IgnitionServiceProvider extends ServiceProvider
             } catch (\Throwable $e) {
                 // Silently ignore if Ignition is not available
                 // This prevents the application from crashing in production
-                \Log::debug('Ignition not available: ' . $e->getMessage());
+                Log::debug('Ignition not available: ' . $e->getMessage());
             }
         }
     }

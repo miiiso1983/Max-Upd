@@ -18,8 +18,23 @@ class BackupService
 
     public function __construct()
     {
-        $this->backupDisk = Storage::disk('backups');
-        $this->encryptionService = new BackupEncryptionService();
+        // Services will be initialized lazily when needed
+    }
+
+    protected function getBackupDisk()
+    {
+        if (!$this->backupDisk) {
+            $this->backupDisk = Storage::disk('backups');
+        }
+        return $this->backupDisk;
+    }
+
+    protected function getEncryptionService()
+    {
+        if (!$this->encryptionService) {
+            $this->encryptionService = new BackupEncryptionService();
+        }
+        return $this->encryptionService;
     }
 
     /**
@@ -58,13 +73,13 @@ class BackupService
 
             // Encrypt if required
             if ($backup->encrypted) {
-                $archivePath = $this->encryptionService->encryptFile($archivePath, $backup);
+                $archivePath = $this->getEncryptionService()->encryptFile($archivePath, $backup);
                 $log->appendLog('Backup encrypted');
             }
 
             // Calculate file size and checksum
-            $fileSize = $this->backupDisk->size($archivePath);
-            $checksum = hash_file('sha256', $this->backupDisk->path($archivePath));
+            $fileSize = $this->getBackupDisk()->size($archivePath);
+            $checksum = hash_file('sha256', $this->getBackupDisk()->path($archivePath));
 
             // Update backup record
             $backup->markAsCompleted($archivePath, $fileSize, $checksum);
@@ -138,12 +153,12 @@ class BackupService
 
             // Encrypt if required
             if ($backup->encrypted) {
-                $archivePath = $this->encryptionService->encryptFile($archivePath, $backup);
+                $archivePath = $this->getEncryptionService()->encryptFile($archivePath, $backup);
             }
 
             // Calculate file size and checksum
-            $fileSize = $this->backupDisk->size($archivePath);
-            $checksum = hash_file('sha256', $this->backupDisk->path($archivePath));
+            $fileSize = $this->getBackupDisk()->size($archivePath);
+            $checksum = hash_file('sha256', $this->getBackupDisk()->path($archivePath));
 
             $backup->markAsCompleted($archivePath, $fileSize, $checksum);
             $this->cleanupTemporaryFiles($backupPath);
@@ -194,7 +209,7 @@ class BackupService
     protected function createBackupPath(Tenant $tenant, TenantBackup $backup)
     {
         $path = "tenants/{$tenant->domain}/backups/" . now()->format('Y/m/d') . "/{$backup->id}";
-        $this->backupDisk->makeDirectory($path);
+        $this->getBackupDisk()->makeDirectory($path);
         return $path;
     }
 
@@ -233,7 +248,7 @@ class BackupService
         }
 
         // Save SQL dump to file
-        $this->backupDisk->put($filePath, $result->output());
+        $this->getBackupDisk()->put($filePath, $result->output());
         
         $log->appendLog('Database backup saved to: ' . $filePath);
         
@@ -254,14 +269,14 @@ class BackupService
         ];
 
         $filesPath = $backupPath . '/files';
-        $this->backupDisk->makeDirectory($filesPath);
+        $this->getBackupDisk()->makeDirectory($filesPath);
 
         foreach ($directories as $directory) {
             $sourcePath = storage_path('app/' . $directory);
             $targetPath = $filesPath . '/' . basename($directory);
 
             if (is_dir($sourcePath)) {
-                $this->copyDirectory($sourcePath, $this->backupDisk->path($targetPath));
+                $this->copyDirectory($sourcePath, $this->getBackupDisk()->path($targetPath));
                 $log->appendLog('Copied directory: ' . $directory);
             }
         }
@@ -279,8 +294,8 @@ class BackupService
         
         $log->appendLog('Creating archive: ' . $archiveName);
 
-        $sourcePath = $this->backupDisk->path($backupPath);
-        $targetPath = $this->backupDisk->path($archivePath);
+        $sourcePath = $this->getBackupDisk()->path($backupPath);
+        $targetPath = $this->getBackupDisk()->path($archivePath);
 
         // Create tar.gz archive
         $command = sprintf(
@@ -369,8 +384,8 @@ class BackupService
      */
     protected function cleanupTemporaryFiles(string $backupPath)
     {
-        if ($this->backupDisk->exists($backupPath)) {
-            $this->backupDisk->deleteDirectory($backupPath);
+        if ($this->getBackupDisk()->exists($backupPath)) {
+            $this->getBackupDisk()->deleteDirectory($backupPath);
         }
     }
 
@@ -379,8 +394,8 @@ class BackupService
      */
     protected function cleanupFailedBackup(TenantBackup $backup)
     {
-        if ($backup->file_path && $this->backupDisk->exists($backup->file_path)) {
-            $this->backupDisk->delete($backup->file_path);
+        if ($backup->file_path && $this->getBackupDisk()->exists($backup->file_path)) {
+            $this->getBackupDisk()->delete($backup->file_path);
         }
     }
 }

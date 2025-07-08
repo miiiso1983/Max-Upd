@@ -15,7 +15,15 @@ class BackupSchedulerService
 
     public function __construct()
     {
-        $this->backupService = new BackupService();
+        // Service will be initialized lazily when needed
+    }
+
+    protected function getBackupService()
+    {
+        if (!$this->backupService) {
+            $this->backupService = new BackupService();
+        }
+        return $this->backupService;
     }
 
     /**
@@ -96,11 +104,11 @@ class BackupSchedulerService
         // Create backup based on type
         switch ($schedule->backup_type) {
             case TenantBackup::TYPE_FULL:
-                $backup = $this->backupService->createFullBackup($tenant, $backupOptions);
+                $backup = $this->getBackupService()->createFullBackup($tenant, $backupOptions);
                 break;
                 
             case TenantBackup::TYPE_INCREMENTAL:
-                $backup = $this->backupService->createIncrementalBackup($tenant, $backupOptions);
+                $backup = $this->getBackupService()->createIncrementalBackup($tenant, $backupOptions);
                 break;
                 
             default:

@@ -27,7 +27,14 @@ class CleanupExpiredBackups extends Command
     public function __construct()
     {
         parent::__construct();
-        $this->encryptionService = new BackupEncryptionService();
+    }
+
+    protected function getEncryptionService()
+    {
+        if (!$this->encryptionService) {
+            $this->encryptionService = new BackupEncryptionService();
+        }
+        return $this->encryptionService;
     }
 
     /**
@@ -93,7 +100,7 @@ class CleanupExpiredBackups extends Command
         $this->info("Total size to be freed: " . $this->formatBytes($totalSize));
 
         // Check for orphaned encryption keys
-        $orphanedKeys = $this->encryptionService->cleanupOrphanedKeys();
+        $orphanedKeys = $this->getEncryptionService()->cleanupOrphanedKeys();
         if ($orphanedKeys > 0) {
             $this->info("Would cleanup {$orphanedKeys} orphaned encryption keys.");
         }
@@ -129,7 +136,7 @@ class CleanupExpiredBackups extends Command
 
                 // Cleanup encryption key if encrypted
                 if ($backup->encrypted) {
-                    $this->encryptionService->cleanupEncryptionKey($backup->id);
+                    $this->getEncryptionService()->cleanupEncryptionKey($backup->id);
                 }
 
                 // Delete backup record
@@ -157,7 +164,7 @@ class CleanupExpiredBackups extends Command
         $this->info("- Space freed: " . $this->formatBytes($freedSpace));
 
         // Cleanup orphaned encryption keys
-        $orphanedKeys = $this->encryptionService->cleanupOrphanedKeys();
+        $orphanedKeys = $this->getEncryptionService()->cleanupOrphanedKeys();
         if ($orphanedKeys > 0) {
             $this->info("- Cleaned up {$orphanedKeys} orphaned encryption keys");
         }
