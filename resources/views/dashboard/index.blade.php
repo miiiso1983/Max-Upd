@@ -84,24 +84,25 @@ a:hover {
 @endpush
 
 @section('content')
-<div class="space-y-6">
-    <!-- Welcome Section -->
-    <div class="bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg p-6 text-white">
-        <div class="flex items-center justify-between">
-            <div>
-                <h1 class="text-2xl font-bold mb-2">مرحباً بك في MaxCon ERP</h1>
-                <p class="text-purple-100">نظام إدارة الموارد المتكامل للشركات الدوائية</p>
-            </div>
-            <div class="text-6xl opacity-20">
-                <i class="fas fa-chart-line"></i>
+<div class="container-responsive">
+    <div class="space-y-6">
+        <!-- Welcome Section -->
+        <div class="bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg p-4 md:p-6 text-white">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold mb-2">مرحباً بك في MaxCon</h1>
+                    <p class="text-purple-100 text-sm md:text-base">نظام إدارة الموارد المتكامل للشركات الدوائية</p>
+                </div>
+                <div class="text-4xl md:text-6xl opacity-20 hidden sm:block">
+                    <i class="fas fa-chart-line"></i>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Statistics Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <!-- Revenue Card -->
-        <div class="bg-white rounded-lg p-6 card-shadow hover-scale">
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+            <!-- Revenue Card -->
+            <div class="card-responsive">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-600">الإيرادات</p>

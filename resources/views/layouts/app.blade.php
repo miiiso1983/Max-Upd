@@ -21,6 +21,9 @@
     <!-- Custom Hover Effects -->
     <link rel="stylesheet" href="{{ asset('css/hover-effects.css') }}">
 
+    <!-- Responsive Design -->
+    <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
+
     <!-- Select2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
@@ -219,9 +222,28 @@
     @stack('styles')
 </head>
 <body class="bg-gray-50">
+    <!-- Mobile Header -->
+    <div class="mobile-header lg:hidden">
+        <button class="mobile-menu-btn" id="mobile-menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="mobile-logo">MaxCon</div>
+        <div class="flex items-center space-x-2 space-x-reverse">
+            <button class="text-gray-600 hover:text-purple-600">
+                <i class="fas fa-bell"></i>
+            </button>
+            <button class="text-gray-600 hover:text-purple-600">
+                <i class="fas fa-user"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay lg:hidden" id="sidebar-overlay"></div>
+
     <div class="flex h-screen">
         <!-- Sidebar -->
-        <div class="w-64 sidebar-gradient text-white flex-shrink-0 overflow-y-auto">
+        <div class="sidebar w-64 sidebar-gradient text-white flex-shrink-0 overflow-y-auto lg:relative lg:translate-x-0" id="sidebar">
             <div class="p-6">
                 <div class="flex items-center space-x-3 space-x-reverse">
                     <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
@@ -524,8 +546,8 @@
         
         <!-- Main Content -->
         <div class="flex-1 flex flex-col overflow-hidden">
-            <!-- Top Navigation -->
-            <header class="bg-white shadow-sm border-b border-gray-200">
+            <!-- Top Navigation - Hidden on Mobile -->
+            <header class="bg-white shadow-sm border-b border-gray-200 hidden lg:block">
                 <div class="flex items-center justify-between px-6 py-4">
                     <div class="flex items-center space-x-4 space-x-reverse">
                         <h2 class="text-xl font-semibold text-gray-800">@yield('page-title', 'لوحة التحكم')</h2>
@@ -583,6 +605,9 @@
     
     <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- Mobile Interactions JS -->
+    <script src="{{ asset('js/mobile-interactions.js') }}"></script>
 
     <!-- Searchable Select Inline JS -->
     <script>
@@ -657,6 +682,52 @@
     function showComingSoon(feature) {
         alert('ميزة "' + feature + '" ستكون متاحة قريباً!\n\nنحن نعمل على تطويرها لتقديم أفضل تجربة لك.');
     }
+    </script>
+
+    <!-- Mobile Menu JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+            if (mobileMenuToggle && sidebar && sidebarOverlay) {
+                // Toggle mobile menu
+                mobileMenuToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('open');
+                    sidebarOverlay.classList.toggle('active');
+                    document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
+                });
+
+                // Close menu when clicking overlay
+                sidebarOverlay.addEventListener('click', function() {
+                    sidebar.classList.remove('open');
+                    sidebarOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+
+                // Close menu when clicking a link (mobile)
+                const sidebarLinks = sidebar.querySelectorAll('a');
+                sidebarLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        if (window.innerWidth < 1024) {
+                            sidebar.classList.remove('open');
+                            sidebarOverlay.classList.remove('active');
+                            document.body.style.overflow = '';
+                        }
+                    });
+                });
+
+                // Handle window resize
+                window.addEventListener('resize', function() {
+                    if (window.innerWidth >= 1024) {
+                        sidebar.classList.remove('open');
+                        sidebarOverlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+        });
     </script>
 </body>
 </html>

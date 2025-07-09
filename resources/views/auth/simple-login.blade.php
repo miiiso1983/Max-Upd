@@ -23,11 +23,19 @@
         
         .login-container {
             background: white;
-            padding: 40px;
+            padding: 20px;
             border-radius: 10px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             width: 100%;
             max-width: 400px;
+            margin: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .login-container {
+                padding: 40px;
+                margin: 0;
+            }
         }
         
         .logo-section {

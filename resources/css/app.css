@@ -39,7 +39,55 @@ body {
     background-clip: text;
 }
 
+/* Responsive Utilities */
+.container-responsive {
+    @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.card-responsive {
+    @apply bg-white rounded-lg p-4 md:p-6 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+}
+
+.form-responsive {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4;
+}
+
+.form-group-responsive {
+    @apply flex flex-col space-y-2;
+}
+
+.btn-responsive {
+    @apply px-4 py-2 md:px-6 md:py-3 rounded-lg font-semibold transition-all duration-300 text-center;
+}
+
+.stats-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6;
+}
+
+.card-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6;
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+    .table-responsive {
+        @apply overflow-x-auto;
+    }
+
+    .table-responsive table {
+        @apply min-w-full;
+    }
+
+    .mobile-hidden {
+        @apply hidden;
+    }
+
+    .mobile-full-width {
+        @apply w-full;
+    }
+}
+
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    --font-sans: 'Cairo', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
