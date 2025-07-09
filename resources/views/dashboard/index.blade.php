@@ -152,6 +152,23 @@ a:hover {
             </div>
         </div>
 
+        <!-- Sales Representatives Card -->
+        <div class="bg-white rounded-lg p-6 card-shadow hover-scale">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">مندوبي المبيعات</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ $stats['total_sales_reps'] ?? 0 }}</p>
+                    <p class="text-xs text-orange-600 flex items-center mt-1">
+                        <i class="fas fa-user-check ml-1"></i>
+                        {{ $stats['active_sales_reps'] ?? 0 }} نشط
+                    </p>
+                </div>
+                <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-user-tie text-orange-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
+
         <!-- Pending Orders Card -->
         <div class="bg-white rounded-lg p-6 card-shadow hover-scale">
             <div class="flex items-center justify-between">

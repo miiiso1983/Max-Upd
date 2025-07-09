@@ -281,7 +281,12 @@
                         <i class="fas fa-users ml-3"></i>
                         <span>العملاء</span>
                     </a>
-                    
+
+                    <a href="{{ route('sales-reps.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('sales-reps.*') ? 'bg-white bg-opacity-20' : '' }}">
+                        <i class="fas fa-user-tie ml-3"></i>
+                        <span>مندوبي المبيعات</span>
+                    </a>
+
                     <a href="{{ route('sales.orders.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('sales.orders.*') ? 'bg-white bg-opacity-20' : '' }}">
                         <i class="fas fa-shopping-cart ml-3"></i>
                         <span>طلبات المبيعات</span>

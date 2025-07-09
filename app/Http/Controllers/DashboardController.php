@@ -80,8 +80,12 @@ class DashboardController extends Controller
                                     ->sum('total_amount'),
             
             'total_customers' => Customer::where('is_active', true)->count(),
-            
+
             'total_products' => Product::where('is_active', true)->count(),
+
+            'total_sales_reps' => \App\Modules\SalesReps\Models\SalesRepresentative::count(),
+
+            'active_sales_reps' => \App\Modules\SalesReps\Models\SalesRepresentative::where('status', 'active')->count(),
             
             'pending_orders' => SalesOrder::where('status', 'pending')->count(),
             
