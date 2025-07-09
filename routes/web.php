@@ -2645,6 +2645,20 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/customers/{customer}/invoices', [CustomerController::class, 'invoices'])->name('customers.invoices');
         Route::get('/customers/{customer}/payments', [CustomerController::class, 'payments'])->name('customers.payments');
 
+        // Sales Representatives Management
+        Route::prefix('representatives')->name('sales-reps.')->group(function () {
+            Route::get('/', [\App\Modules\SalesReps\Http\Controllers\SalesRepController::class, 'index'])->name('index');
+            Route::get('/create', [\App\Modules\SalesReps\Http\Controllers\SalesRepController::class, 'create'])->name('create');
+            Route::post('/', [\App\Modules\SalesReps\Http\Controllers\SalesRepController::class, 'store'])->name('store');
+            Route::get('/{salesRep}', [\App\Modules\SalesReps\Http\Controllers\SalesRepController::class, 'show'])->name('show');
+            Route::get('/{salesRep}/edit', [\App\Modules\SalesReps\Http\Controllers\SalesRepController::class, 'edit'])->name('edit');
+            Route::put('/{salesRep}', [\App\Modules\SalesReps\Http\Controllers\SalesRepController::class, 'update'])->name('update');
+            Route::delete('/{salesRep}', [\App\Modules\SalesReps\Http\Controllers\SalesRepController::class, 'destroy'])->name('destroy');
+            Route::get('/{salesRep}/performance', [\App\Modules\SalesReps\Http\Controllers\SalesRepController::class, 'performance'])->name('performance');
+            Route::get('/{salesRep}/location', [\App\Modules\SalesReps\Http\Controllers\SalesRepController::class, 'location'])->name('location');
+            Route::post('/bulk-action', [\App\Modules\SalesReps\Http\Controllers\SalesRepController::class, 'bulkAction'])->name('bulk-action');
+        });
+
         // Sales Orders
         Route::resource('orders', SalesOrderController::class);
         Route::post('/orders/{order}/confirm', [SalesOrderController::class, 'confirm'])->name('orders.confirm');

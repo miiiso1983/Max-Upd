@@ -629,6 +629,9 @@ Route::middleware(['auth:sanctum', 'role:super_admin'])->prefix('super-admin')->
     Route::delete('/tenants/{tenant}', [TenantController::class, 'destroy']);
 });
 
+// Sales Representatives API Routes
+require __DIR__.'/api_sales_reps.php';
+
 // Health check route
 Route::get('/health', function () {
     return response()->json([
