@@ -129,11 +129,7 @@
             <p>نظام إدارة الموارد المؤسسية</p>
         </div>
         
-        <div class="credentials">
-            <h3>بيانات الدخول الافتراضية:</h3>
-            <p><strong>البريد الإلكتروني:</strong> admin@maxcon-erp.com</p>
-            <p><strong>كلمة المرور:</strong> MaxCon@2025</p>
-        </div>
+
         
         @if(session('success'))
             <div class="success">{{ session('success') }}</div>
@@ -144,7 +140,7 @@
             
             <div class="form-group">
                 <label for="email">البريد الإلكتروني</label>
-                <input type="email" id="email" name="email" value="{{ old('email', 'admin@maxcon-erp.com') }}" required>
+                <input type="email" id="email" name="email" value="{{ old('email') }}" required>
                 @error('email')
                     <div class="error">{{ $message }}</div>
                 @enderror
@@ -152,7 +148,7 @@
             
             <div class="form-group">
                 <label for="password">كلمة المرور</label>
-                <input type="password" id="password" name="password" value="MaxCon@2025" required>
+                <input type="password" id="password" name="password" value="" required>
                 @error('password')
                     <div class="error">{{ $message }}</div>
                 @enderror

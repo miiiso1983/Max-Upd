@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'تفاصيل المنتج - ' . $product->display_trade_name)
+@section('title', "تفاصيل المنتج - {$product->display_trade_name}")
 @section('page-title', 'تفاصيل المنتج')
 
 @section('content')
@@ -310,21 +310,23 @@
                 
                 <div class="space-y-3">
                     @forelse($recentBatches ?? [] as $batch)
+                    @if($batch)
                     <div class="flex items-center p-3 bg-gray-50 rounded-lg">
                         <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
                             <i class="fas fa-vials text-purple-600 text-xs"></i>
                         </div>
                         <div class="mr-3 flex-1">
-                            <p class="text-sm font-medium text-gray-900">{{ $batch->batch_number }}</p>
-                            <p class="text-xs text-gray-500">{{ $batch->manufacturing_date ? $batch->manufacturing_date->format('Y-m-d') : 'غير محدد' }}</p>
+                            <p class="text-sm font-medium text-gray-900">{{ $batch->batch_number ?? 'غير محدد' }}</p>
+                            <p class="text-xs text-gray-500">{{ isset($batch->manufacturing_date) && $batch->manufacturing_date ? $batch->manufacturing_date->format('Y-m-d') : 'غير محدد' }}</p>
                         </div>
                         <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium
-                            @if($batch->batch_status === 'released') bg-green-100 text-green-800
-                            @elseif($batch->batch_status === 'testing') bg-yellow-100 text-yellow-800
+                            @if(isset($batch->batch_status) && $batch->batch_status === 'released') bg-green-100 text-green-800
+                            @elseif(isset($batch->batch_status) && $batch->batch_status === 'testing') bg-yellow-100 text-yellow-800
                             @else bg-blue-100 text-blue-800 @endif">
-                            {{ $batch->batch_status_arabic ?? $batch->batch_status }}
+                            {{ $batch->batch_status_arabic ?? $batch->batch_status ?? 'غير محدد' }}
                         </span>
                     </div>
+                    @endif
                     @empty
                     <p class="text-sm text-gray-500 text-center py-4">لا توجد دفعات</p>
                     @endforelse

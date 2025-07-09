@@ -149,21 +149,21 @@
             
             <div class="form-group">
                 <label for="email">📧 البريد الإلكتروني</label>
-                <input type="email" 
-                       id="email" 
-                       name="email" 
-                       value="admin@maxcon-erp.com" 
-                       required 
+                <input type="email"
+                       id="email"
+                       name="email"
+                       value=""
+                       required
                        autocomplete="email">
             </div>
             
             <div class="form-group">
                 <label for="password">🔑 كلمة المرور</label>
-                <input type="password" 
-                       id="password" 
-                       name="password" 
-                       value="MaxCon@2025" 
-                       required 
+                <input type="password"
+                       id="password"
+                       name="password"
+                       value=""
+                       required
                        autocomplete="current-password">
             </div>
             
@@ -175,11 +175,7 @@
             <button type="submit">🚀 تسجيل الدخول</button>
         </form>
         
-        <div class="credentials">
-            <strong>بيانات Super Admin:</strong><br>
-            البريد: admin@maxcon-erp.com<br>
-            كلمة المرور: MaxCon@2025
-        </div>
+
     </div>
 </body>
 </html>

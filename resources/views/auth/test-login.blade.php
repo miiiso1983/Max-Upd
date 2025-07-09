@@ -81,12 +81,12 @@
 
             <div class="form-group">
                 <label for="email">البريد الإلكتروني</label>
-                <input type="email" id="email" name="email" value="admin@maxcon-erp.com" required>
+                <input type="email" id="email" name="email" value="" required>
             </div>
 
             <div class="form-group">
                 <label for="password">كلمة المرور</label>
-                <input type="password" id="password" name="password" value="MaxCon@2025" required>
+                <input type="password" id="password" name="password" value="" required>
             </div>
 
             <div class="form-group">
@@ -133,10 +133,7 @@
         });
         </script>
         
-        <p style="margin-top: 20px; text-align: center; font-size: 14px; color: #666;">
-            البريد الإلكتروني: admin@maxcon-erp.com<br>
-            كلمة المرور: MaxCon@2025
-        </p>
+
     </div>
 </body>
 </html>

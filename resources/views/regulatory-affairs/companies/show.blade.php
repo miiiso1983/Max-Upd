@@ -18,7 +18,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-2xl font-bold mb-2">{{ $company->display_name ?? 'اسم الشركة' }}</h1>
-                <p class="text-blue-100">{{ ($company->display_trade_name ?? '') }} - {{ ($company->company_type_arabic ?? '') }}</p>
+                <p class="text-blue-100">{{ $company->display_trade_name ?? '' }} - {{ $company->company_type_arabic ?? '' }}</p>
                 <div class="flex items-center mt-2 space-x-4 space-x-reverse">
                     <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
                         @if(($company->status ?? '') === 'active') bg-green-100 text-green-800
@@ -175,10 +175,10 @@
                     
                     <div>
                         <label class="block text-sm font-medium text-gray-600">تاريخ الانتهاء</label>
-                        <p class="text-sm text-gray-900 {{ $company->isLicenseExpiring(30) ? 'text-orange-600 font-medium' : '' }}">
-                            {{ $company->license_expiry_date->format('Y-m-d') }}
-                            @if($company->isLicenseExpiring(30))
-                                <span class="text-xs">(ينتهي خلال {{ $company->getDaysUntilLicenseExpiry() }} يوم)</span>
+                        <p class="text-sm text-gray-900 {{ isset($company->license_expiry_date) && \Carbon\Carbon::parse($company->license_expiry_date)->diffInDays(now()) <= 30 ? 'text-orange-600 font-medium' : '' }}">
+                            {{ isset($company->license_expiry_date) ? \Carbon\Carbon::parse($company->license_expiry_date)->format('Y-m-d') : 'غير محدد' }}
+                            @if(isset($company->license_expiry_date) && \Carbon\Carbon::parse($company->license_expiry_date)->diffInDays(now()) <= 30)
+                                <span class="text-xs">(ينتهي خلال {{ \Carbon\Carbon::parse($company->license_expiry_date)->diffInDays(now()) }} يوم)</span>
                             @endif
                         </p>
                     </div>

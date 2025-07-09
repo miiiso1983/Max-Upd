@@ -58,10 +58,10 @@ class CleanupExpiredBackups extends Command
                 'trace' => $e->getTraceAsString()
             ]);
             
-            return Command::FAILURE;
+            return self::FAILURE;
         }
 
-        return Command::SUCCESS;
+        return self::SUCCESS;
     }
 
     protected function handleDryRun()

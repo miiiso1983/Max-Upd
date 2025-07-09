@@ -123,19 +123,19 @@
                 
                 <div class="form-group">
                     <label for="email">البريد الإلكتروني:</label>
-                    <input type="email" 
-                           id="email" 
-                           name="email" 
-                           value="admin@maxcon-erp.com" 
+                    <input type="email"
+                           id="email"
+                           name="email"
+                           value=""
                            required>
                 </div>
                 
                 <div class="form-group">
                     <label for="password">كلمة المرور:</label>
-                    <input type="password" 
-                           id="password" 
-                           name="password" 
-                           value="MaxCon@2025" 
+                    <input type="password"
+                           id="password"
+                           name="password"
+                           value=""
                            required>
                 </div>
                 
