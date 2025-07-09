@@ -30,11 +30,37 @@
             max-width: 400px;
         }
         
-        h1 {
+        .logo-section {
             text-align: center;
             margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .brand-name {
+            font-size: 36px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 0 0 8px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .brand-subtitle {
+            font-size: 14px;
+            color: #666;
+            margin: 0;
+            font-weight: normal;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
             color: #333;
-            font-size: 24px;
+            font-size: 22px;
         }
         
         .form-group {
@@ -130,7 +156,11 @@
 </head>
 <body>
     <div class="login-container">
-        <h1>🔐 تسجيل الدخول</h1>
+        <div class="logo-section">
+            <h1 class="brand-name">MaxCon</h1>
+            <p class="brand-subtitle">نظام إدارة الموارد المؤسسية</p>
+        </div>
+        <h2>🔐 تسجيل الدخول</h2>
         
         @if(session('error'))
             <div class="error">

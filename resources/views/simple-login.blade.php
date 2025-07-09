@@ -125,7 +125,7 @@
 <body>
     <div class="login-container">
         <div class="logo">
-            <h1>MaxCon ERP</h1>
+            <h1>MaxCon</h1>
             <p>نظام إدارة الموارد المؤسسية</p>
         </div>
         

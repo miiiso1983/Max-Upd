@@ -32,7 +32,7 @@
             <div class="mx-auto h-20 w-20 bg-white rounded-full flex items-center justify-center shadow-lg">
                 <i class="fas fa-chart-line text-purple-600 text-3xl"></i>
             </div>
-            <h2 class="mt-6 text-3xl font-bold text-white">MaxCon ERP</h2>
+            <h2 class="mt-6 text-3xl font-bold text-white">MaxCon</h2>
             <p class="mt-2 text-sm text-purple-100">نظام إدارة الموارد المتكامل للشركات الدوائية</p>
         </div>
 
