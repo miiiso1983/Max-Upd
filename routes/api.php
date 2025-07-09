@@ -632,6 +632,9 @@ Route::middleware(['auth:sanctum', 'role:super_admin'])->prefix('super-admin')->
 // Sales Representatives API Routes
 require __DIR__.'/api_sales_reps.php';
 
+// Test API Routes (No Authentication Required)
+require __DIR__.'/api_test.php';
+
 // Health check route
 Route::get('/health', function () {
     return response()->json([
