@@ -22,3 +22,36 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Flutter
+flutter_sales_rep_app/.dart_tool/
+flutter_sales_rep_app/.flutter-plugins
+flutter_sales_rep_app/.flutter-plugins-dependencies
+flutter_sales_rep_app/.packages
+flutter_sales_rep_app/.pub-cache/
+flutter_sales_rep_app/.pub/
+flutter_sales_rep_app/build/
+flutter_sales_rep_app/.fvm/
+flutter_sales_rep_app/coverage/
+flutter_sales_rep_app/lib/generated_plugin_registrant.dart
+
+# Flutter Web
+flutter_sales_rep_app/web/
+
+# Flutter iOS
+flutter_sales_rep_app/ios/Flutter/flutter_assets/
+flutter_sales_rep_app/ios/Flutter/flutter_export_environment.sh
+flutter_sales_rep_app/ios/Runner.xcworkspace/
+
+# Flutter Android
+flutter_sales_rep_app/android/app/debug
+flutter_sales_rep_app/android/app/profile
+flutter_sales_rep_app/android/app/release
+
+# Custom scripts (temporary)
+fix_sales_reps_permissions.php
+create_sample_sales_reps.php
+
+# Database
+*.sqlite
+*.db

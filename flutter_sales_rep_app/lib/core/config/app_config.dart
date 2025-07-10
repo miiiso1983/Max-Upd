@@ -1,7 +1,7 @@
 class AppConfig {
   // 🌐 API Configuration
-  static const String apiBaseUrl = 'https://your-production-domain.com/api';
-  static const String webBaseUrl = 'https://your-production-domain.com';
+  static const String apiBaseUrl = 'https://phpstack-1486247-5676575.cloudwaysapps.com/api';
+  static const String webBaseUrl = 'https://phpstack-1486247-5676575.cloudwaysapps.com';
   
   // 📱 App Information
   static const String appName = 'MaxCon Sales Rep';

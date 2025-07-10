@@ -1,63 +1,157 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🏢 MaxCon ERP - نظام تخطيط موارد المؤسسات
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+<img src="https://img.shields.io/badge/Laravel-10-red" alt="Laravel 10">
+<img src="https://img.shields.io/badge/Flutter-3.10+-blue" alt="Flutter 3.10+">
+<img src="https://img.shields.io/badge/PHP-8.1+-purple" alt="PHP 8.1+">
+<img src="https://img.shields.io/badge/License-MIT-green" alt="MIT License">
 </p>
 
-## About Laravel
+## 🎯 نظرة عامة
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+نظام ERP شامل متعدد المستأجرين مع تطبيق مندوبي المبيعات المحمول، مصمم خصيصاً للسوق العراقي.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### الميزات الرئيسية:
+- **🏢 نظام متعدد المستأجرين**: إدارة عدة شركات من منصة واحدة
+- **📱 تطبيق محمول**: تطبيق Flutter لمندوبي المبيعات مع اختبار API
+- **🌐 واجهة ويب**: لوحة تحكم شاملة للإدارة
+- **🔄 مزامنة البيانات**: عمل أوفلاين مع مزامنة تلقائية
+- **🇮🇶 دعم العربية**: واجهة RTL كاملة للسوق العراقي
+- **💰 نظام الاستحصال**: مع إرسال WhatsApp تلقائي
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🚀 التثبيت والإعداد
 
-## Learning Laravel
+### متطلبات النظام
+- PHP 8.1+
+- Composer
+- Node.js & NPM
+- MySQL 8.0+
+- Flutter 3.10+ (للتطبيق المحمول)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### خطوات التثبيت
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+1. **استنساخ المشروع**
+```bash
+git clone https://github.com/miiiso1983/Max-Upd.git
+cd Max-Upd
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2. **تثبيت التبعيات**
+```bash
+composer install
+npm install
+```
 
-## Laravel Sponsors
+3. **إعداد البيئة**
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+4. **إعداد قاعدة البيانات**
+```bash
+# تحديث .env بمعلومات قاعدة البيانات
+php artisan migrate
+php artisan db:seed
+```
 
-### Premium Partners
+5. **تشغيل الخادم**
+```bash
+php artisan serve
+npm run dev
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### بيانات الدخول الافتراضية
+```
+البريد الإلكتروني: admin@maxcon-erp.com
+كلمة المرور: MaxCon@2025
+```
 
-## Contributing
+## 📱 تطبيق مندوبي المبيعات
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### إعداد التطبيق المحمول
 
-## Code of Conduct
+1. **الانتقال لمجلد التطبيق**
+```bash
+cd flutter_sales_rep_app
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+2. **تثبيت التبعيات**
+```bash
+flutter pub get
+```
 
-## Security Vulnerabilities
+3. **تشغيل التطبيق**
+```bash
+# للويب
+flutter run -d chrome --web-port=8080
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# للأندرويد
+flutter run -d android
 
-## License
+# للـ iOS
+flutter run -d ios
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# MaxCon-SaaS
-# Max-Upd
+### ميزات التطبيق المحمول
+- 🔐 **تسجيل دخول آمن** مع بيانات تجريبية
+- 🌐 **اختبار API** مباشر من التطبيق
+- 👥 **إدارة العملاء** مع بيانات وهمية
+- 📍 **تتبع الزيارات** مع محاكاة GPS
+- ✅ **إدارة المهام** التفاعلية
+- 📊 **تقارير الأداء** المرئية
+- 💰 **نظام الاستحصال** مع WhatsApp
+- 🔄 **عمل أوفلاين** مع مزامنة
+
+### اختبار التطبيق
+- افتح التطبيق على: `http://localhost:8080`
+- استخدم البيانات: `admin@maxcon-erp.com` / `MaxCon@2025`
+- اضغط "اختبار الاتصال بـ API" للتحقق من الاتصال
+
+## 🌐 API Documentation
+
+### نقاط النهاية الرئيسية
+
+#### اختبار الاتصال
+```
+GET /api/test/sales-reps - اختبار وحدة مندوبي المبيعات
+```
+
+#### المصادقة
+```
+POST /api/mobile/login - تسجيل الدخول
+POST /api/mobile/refresh - تحديث الرمز المميز
+POST /api/mobile/logout - تسجيل الخروج
+```
+
+#### مندوبي المبيعات
+```
+GET /api/sales-reps - قائمة المندوبين
+POST /api/sales-reps - إضافة مندوب جديد
+GET /api/sales-reps/{id} - تفاصيل المندوب
+PUT /api/sales-reps/{id} - تحديث المندوب
+```
+
+## 🤝 المساهمة
+
+نرحب بمساهماتكم! يرجى اتباع الخطوات التالية:
+
+1. Fork المشروع
+2. إنشاء فرع للميزة الجديدة (`git checkout -b feature/AmazingFeature`)
+3. Commit التغييرات (`git commit -m 'Add some AmazingFeature'`)
+4. Push للفرع (`git push origin feature/AmazingFeature`)
+5. فتح Pull Request
+
+## 📞 الدعم والتواصل
+
+- **البريد الإلكتروني**: support@maxcon-erp.com
+- **الموقع**: https://maxcon-erp.com
+- **GitHub Issues**: لتقارير الأخطاء والاقتراحات
+
+## 📄 الترخيص
+
+هذا المشروع مرخص تحت رخصة MIT - راجع ملف [LICENSE](LICENSE) للتفاصيل.
+
+---
+
+**تم تطوير هذا النظام بـ ❤️ للسوق العراقي**

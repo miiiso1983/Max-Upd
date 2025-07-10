@@ -1,37 +1,32 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:dio/dio.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:http/http.dart' as http;
 
-import '../config/app_config.dart';
+// Core imports
 import '../models/api_response.dart';
 import '../utils/logger.dart';
 import 'storage_service.dart';
 
+/// API Service for MaxCon Sales Rep App
+/// Uses HTTP package with ApiResponse wrapper for better compatibility
 class ApiService {
   static final ApiService _instance = ApiService._internal();
   static ApiService get instance => _instance;
   ApiService._internal();
 
-  late Dio _dio;
-  final StorageService _storage = StorageService.instance;
+  // Base URL for API calls
+  static const String baseUrl = 'https://phpstack-1486247-5676575.cloudwaysapps.com/api';
 
+  // Default headers
+  static const Map<String, String> defaultHeaders = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'X-Requested-With': 'XMLHttpRequest',
+  };
+
+  /// Initialize the API service
   void init() {
-    _dio = Dio(BaseOptions(
-      baseUrl: AppConfig.apiBaseUrl,
-      connectTimeout: const Duration(seconds: 30),
-      receiveTimeout: const Duration(seconds: 30),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest',
-      },
-    ));
-
-    // Add interceptors
-    _dio.interceptors.add(_AuthInterceptor());
-    _dio.interceptors.add(_LoggingInterceptor());
-    _dio.interceptors.add(_ErrorInterceptor());
+    Logger.info('API Service initialized with base URL: $baseUrl');
   }
 
   // Authentication methods
@@ -41,13 +36,32 @@ class ApiService {
     String? deviceId,
   }) async {
     try {
-      final response = await _dio.post('/mobile/login', data: {
-        'email': email,
-        'password': password,
-        'device_id': deviceId,
-      });
+      final headers = Map<String, String>.from(defaultHeaders);
+      final token = StorageService.instance.getAccessToken();
+      if (token != null) {
+        headers['Authorization'] = 'Bearer $token';
+      }
 
-      return ApiResponse.fromJson(response.data);
+      final response = await http.post(
+        Uri.parse('$baseUrl/mobile/login'),
+        headers: headers,
+        body: json.encode({
+          'email': email,
+          'password': password,
+          'device_id': deviceId,
+        }),
+      );
+
+      final data = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        return ApiResponse.fromJson(data, (data) => data as Map<String, dynamic>);
+      } else {
+        return ApiResponse.error(
+          message: data['message'] ?? 'فشل في تسجيل الدخول',
+          statusCode: response.statusCode,
+        );
+      }
     } catch (e) {
       return _handleError(e);
     }
@@ -55,16 +69,30 @@ class ApiService {
 
   Future<ApiResponse<Map<String, dynamic>>> refreshToken() async {
     try {
-      final refreshToken = await _storage.getRefreshToken();
+      final refreshToken = StorageService.instance.getRefreshToken();
       if (refreshToken == null) {
-        throw Exception('No refresh token available');
+        return ApiResponse.error(message: 'لا يوجد refresh token متاح');
       }
 
-      final response = await _dio.post('/mobile/refresh', data: {
-        'refresh_token': refreshToken,
-      });
+      final headers = Map<String, String>.from(defaultHeaders);
+      final response = await http.post(
+        Uri.parse('$baseUrl/mobile/refresh'),
+        headers: headers,
+        body: json.encode({
+          'refresh_token': refreshToken,
+        }),
+      );
 
-      return ApiResponse.fromJson(response.data);
+      final data = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        return ApiResponse.fromJson(data, (data) => data as Map<String, dynamic>);
+      } else {
+        return ApiResponse.error(
+          message: data['message'] ?? 'فشل في تحديث الرمز المميز',
+          statusCode: response.statusCode,
+        );
+      }
     } catch (e) {
       return _handleError(e);
     }
@@ -72,8 +100,18 @@ class ApiService {
 
   Future<ApiResponse<void>> logout() async {
     try {
-      await _dio.post('/mobile/logout');
-      return ApiResponse(success: true, message: 'تم تسجيل الخروج بنجاح');
+      final headers = Map<String, String>.from(defaultHeaders);
+      final token = StorageService.instance.getAccessToken();
+      if (token != null) {
+        headers['Authorization'] = 'Bearer $token';
+      }
+
+      await http.post(
+        Uri.parse('$baseUrl/mobile/logout'),
+        headers: headers,
+      );
+
+      return const ApiResponse(success: true, message: 'تم تسجيل الخروج بنجاح');
     } catch (e) {
       return _handleError(e);
     }
@@ -82,17 +120,56 @@ class ApiService {
   // Profile methods
   Future<ApiResponse<Map<String, dynamic>>> getProfile() async {
     try {
-      final response = await _dio.get('/mobile/profile');
-      return ApiResponse.fromJson(response.data);
+      final headers = Map<String, String>.from(defaultHeaders);
+      final token = StorageService.instance.getAccessToken();
+      if (token != null) {
+        headers['Authorization'] = 'Bearer $token';
+      }
+
+      final response = await http.get(
+        Uri.parse('$baseUrl/mobile/profile'),
+        headers: headers,
+      );
+
+      final data = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        return ApiResponse.fromJson(data, (data) => data as Map<String, dynamic>);
+      } else {
+        return ApiResponse.error(
+          message: data['message'] ?? 'فشل في جلب الملف الشخصي',
+          statusCode: response.statusCode,
+        );
+      }
     } catch (e) {
       return _handleError(e);
     }
   }
 
-  Future<ApiResponse<Map<String, dynamic>>> updateProfile(Map<String, dynamic> data) async {
+  Future<ApiResponse<Map<String, dynamic>>> updateProfile(Map<String, dynamic> profileData) async {
     try {
-      final response = await _dio.put('/mobile/profile', data: data);
-      return ApiResponse.fromJson(response.data);
+      final headers = Map<String, String>.from(defaultHeaders);
+      final token = StorageService.instance.getAccessToken();
+      if (token != null) {
+        headers['Authorization'] = 'Bearer $token';
+      }
+
+      final response = await http.put(
+        Uri.parse('$baseUrl/mobile/profile'),
+        headers: headers,
+        body: json.encode(profileData),
+      );
+
+      final data = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        return ApiResponse.fromJson(data, (data) => data as Map<String, dynamic>);
+      } else {
+        return ApiResponse.error(
+          message: data['message'] ?? 'فشل في تحديث الملف الشخصي',
+          statusCode: response.statusCode,
+        );
+      }
     } catch (e) {
       return _handleError(e);
     }
@@ -104,14 +181,42 @@ class ApiService {
     Map<String, dynamic>? filters,
   }) async {
     try {
-      final queryParams = <String, dynamic>{};
-      if (salesRepId != null) queryParams['sales_rep_id'] = salesRepId;
-      if (filters != null) queryParams.addAll(filters);
+      final headers = Map<String, String>.from(defaultHeaders);
+      final token = StorageService.instance.getAccessToken();
+      if (token != null) {
+        headers['Authorization'] = 'Bearer $token';
+      }
 
-      final response = await _dio.get('/sales-reps/$salesRepId/customers', 
-        queryParameters: queryParams);
-      
-      return ApiResponse.fromJson(response.data);
+      String endpoint = '/customers';
+      if (salesRepId != null) {
+        endpoint = '/sales-reps/$salesRepId/customers';
+      }
+
+      final queryParams = <String, String>{};
+      if (filters != null) {
+        filters.forEach((key, value) {
+          queryParams[key] = value.toString();
+        });
+      }
+
+      final uri = Uri.parse('$baseUrl$endpoint').replace(queryParameters: queryParams);
+      final response = await http.get(uri, headers: headers);
+
+      final data = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        return ApiResponse.fromJson(data, (data) {
+          if (data is List) {
+            return data.cast<Map<String, dynamic>>();
+          }
+          return <Map<String, dynamic>>[];
+        });
+      } else {
+        return ApiResponse.error(
+          message: data['message'] ?? 'فشل في جلب العملاء',
+          statusCode: response.statusCode,
+        );
+      }
     } catch (e) {
       return _handleError(e);
     }
@@ -125,14 +230,36 @@ class ApiService {
     String? status,
   }) async {
     try {
-      final queryParams = <String, dynamic>{};
-      if (salesRepId != null) queryParams['sales_rep_id'] = salesRepId;
+      final headers = Map<String, String>.from(defaultHeaders);
+      final token = StorageService.instance.getAccessToken();
+      if (token != null) {
+        headers['Authorization'] = 'Bearer $token';
+      }
+
+      final queryParams = <String, String>{};
+      if (salesRepId != null) queryParams['sales_rep_id'] = salesRepId.toString();
       if (startDate != null) queryParams['start_date'] = startDate;
       if (endDate != null) queryParams['end_date'] = endDate;
       if (status != null) queryParams['status'] = status;
 
-      final response = await _dio.get('/visits', queryParameters: queryParams);
-      return ApiResponse.fromJson(response.data);
+      final uri = Uri.parse('$baseUrl/visits').replace(queryParameters: queryParams);
+      final response = await http.get(uri, headers: headers);
+
+      final data = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        return ApiResponse.fromJson(data, (data) {
+          if (data is List) {
+            return data.cast<Map<String, dynamic>>();
+          }
+          return <Map<String, dynamic>>[];
+        });
+      } else {
+        return ApiResponse.error(
+          message: data['message'] ?? 'فشل في جلب الزيارات',
+          statusCode: response.statusCode,
+        );
+      }
     } catch (e) {
       return _handleError(e);
     }
@@ -140,32 +267,92 @@ class ApiService {
 
   Future<ApiResponse<Map<String, dynamic>>> createVisit(Map<String, dynamic> visitData) async {
     try {
-      final response = await _dio.post('/visits', data: visitData);
-      return ApiResponse.fromJson(response.data);
+      final headers = Map<String, String>.from(defaultHeaders);
+      final token = StorageService.instance.getAccessToken();
+      if (token != null) {
+        headers['Authorization'] = 'Bearer $token';
+      }
+
+      final response = await http.post(
+        Uri.parse('$baseUrl/visits'),
+        headers: headers,
+        body: json.encode(visitData),
+      );
+
+      final data = json.decode(response.body);
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        return ApiResponse.fromJson(data, (data) => data as Map<String, dynamic>);
+      } else {
+        return ApiResponse.error(
+          message: data['message'] ?? 'فشل في إنشاء الزيارة',
+          statusCode: response.statusCode,
+        );
+      }
     } catch (e) {
       return _handleError(e);
     }
   }
 
   Future<ApiResponse<Map<String, dynamic>>> checkInVisit(
-    int visitId, 
+    int visitId,
     Map<String, dynamic> checkInData
   ) async {
     try {
-      final response = await _dio.post('/visits/$visitId/check-in', data: checkInData);
-      return ApiResponse.fromJson(response.data);
+      final headers = Map<String, String>.from(defaultHeaders);
+      final token = StorageService.instance.getAccessToken();
+      if (token != null) {
+        headers['Authorization'] = 'Bearer $token';
+      }
+
+      final response = await http.post(
+        Uri.parse('$baseUrl/visits/$visitId/check-in'),
+        headers: headers,
+        body: json.encode(checkInData),
+      );
+
+      final data = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        return ApiResponse.fromJson(data, (data) => data as Map<String, dynamic>);
+      } else {
+        return ApiResponse.error(
+          message: data['message'] ?? 'فشل في تسجيل الدخول للزيارة',
+          statusCode: response.statusCode,
+        );
+      }
     } catch (e) {
       return _handleError(e);
     }
   }
 
   Future<ApiResponse<Map<String, dynamic>>> checkOutVisit(
-    int visitId, 
+    int visitId,
     Map<String, dynamic> checkOutData
   ) async {
     try {
-      final response = await _dio.post('/visits/$visitId/check-out', data: checkOutData);
-      return ApiResponse.fromJson(response.data);
+      final headers = Map<String, String>.from(defaultHeaders);
+      final token = StorageService.instance.getAccessToken();
+      if (token != null) {
+        headers['Authorization'] = 'Bearer $token';
+      }
+
+      final response = await http.post(
+        Uri.parse('$baseUrl/visits/$visitId/check-out'),
+        headers: headers,
+        body: json.encode(checkOutData),
+      );
+
+      final data = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        return ApiResponse.fromJson(data, (data) => data as Map<String, dynamic>);
+      } else {
+        return ApiResponse.error(
+          message: data['message'] ?? 'فشل في تسجيل الخروج من الزيارة',
+          statusCode: response.statusCode,
+        );
+      }
     } catch (e) {
       return _handleError(e);
     }
@@ -178,29 +365,71 @@ class ApiService {
     String? type,
   }) async {
     try {
-      final queryParams = <String, dynamic>{};
-      if (salesRepId != null) queryParams['sales_rep_id'] = salesRepId;
+      final headers = Map<String, String>.from(defaultHeaders);
+      final token = StorageService.instance.getAccessToken();
+      if (token != null) {
+        headers['Authorization'] = 'Bearer $token';
+      }
+
+      final queryParams = <String, String>{};
+      if (salesRepId != null) queryParams['sales_rep_id'] = salesRepId.toString();
       if (status != null) queryParams['status'] = status;
       if (type != null) queryParams['type'] = type;
 
-      final response = await _dio.get('/my-tasks', queryParameters: queryParams);
-      return ApiResponse.fromJson(response.data);
+      final uri = Uri.parse('$baseUrl/my-tasks').replace(queryParameters: queryParams);
+      final response = await http.get(uri, headers: headers);
+
+      final data = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        return ApiResponse.fromJson(data, (data) {
+          if (data is List) {
+            return data.cast<Map<String, dynamic>>();
+          }
+          return <Map<String, dynamic>>[];
+        });
+      } else {
+        return ApiResponse.error(
+          message: data['message'] ?? 'فشل في جلب المهام',
+          statusCode: response.statusCode,
+        );
+      }
     } catch (e) {
       return _handleError(e);
     }
   }
 
   Future<ApiResponse<Map<String, dynamic>>> updateTaskStatus(
-    int taskId, 
-    String status, 
+    int taskId,
+    String status,
     {Map<String, dynamic>? additionalData}
   ) async {
     try {
-      final data = {'status': status};
-      if (additionalData != null) data.addAll(additionalData);
+      final headers = Map<String, String>.from(defaultHeaders);
+      final token = StorageService.instance.getAccessToken();
+      if (token != null) {
+        headers['Authorization'] = 'Bearer $token';
+      }
 
-      final response = await _dio.put('/tasks/$taskId', data: data);
-      return ApiResponse.fromJson(response.data);
+      final requestData = <String, dynamic>{'status': status};
+      if (additionalData != null) requestData.addAll(additionalData);
+
+      final response = await http.put(
+        Uri.parse('$baseUrl/tasks/$taskId'),
+        headers: headers,
+        body: json.encode(requestData),
+      );
+
+      final data = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        return ApiResponse.fromJson(data, (data) => data as Map<String, dynamic>);
+      } else {
+        return ApiResponse.error(
+          message: data['message'] ?? 'فشل في تحديث حالة المهمة',
+          statusCode: response.statusCode,
+        );
+      }
     } catch (e) {
       return _handleError(e);
     }
@@ -214,17 +443,37 @@ class ApiService {
     String? activityType,
   }) async {
     try {
-      final salesRepId = await _storage.getSalesRepId();
-      if (salesRepId == null) throw Exception('Sales rep ID not found');
+      final headers = Map<String, String>.from(defaultHeaders);
+      final token = StorageService.instance.getAccessToken();
+      if (token != null) {
+        headers['Authorization'] = 'Bearer $token';
+      }
 
-      await _dio.post('/sales-reps/$salesRepId/location', data: {
-        'latitude': latitude,
-        'longitude': longitude,
-        'accuracy': accuracy,
-        'activity_type': activityType,
-      });
+      final salesRepId = StorageService.instance.getSalesRepId();
+      if (salesRepId == null) {
+        return ApiResponse.error(message: 'لم يتم العثور على معرف المندوب');
+      }
 
-      return ApiResponse(success: true, message: 'تم تحديث الموقع');
+      final response = await http.post(
+        Uri.parse('$baseUrl/sales-reps/$salesRepId/location'),
+        headers: headers,
+        body: json.encode({
+          'latitude': latitude,
+          'longitude': longitude,
+          'accuracy': accuracy,
+          'activity_type': activityType,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        return const ApiResponse(success: true, message: 'تم تحديث الموقع');
+      } else {
+        final data = json.decode(response.body);
+        return ApiResponse.error(
+          message: data['message'] ?? 'فشل في تحديث الموقع',
+          statusCode: response.statusCode,
+        );
+      }
     } catch (e) {
       return _handleError(e);
     }
@@ -233,8 +482,28 @@ class ApiService {
   // Sync methods
   Future<ApiResponse<Map<String, dynamic>>> syncVisits(List<Map<String, dynamic>> visits) async {
     try {
-      final response = await _dio.post('/visits-sync', data: {'visits': visits});
-      return ApiResponse.fromJson(response.data);
+      final headers = Map<String, String>.from(defaultHeaders);
+      final token = StorageService.instance.getAccessToken();
+      if (token != null) {
+        headers['Authorization'] = 'Bearer $token';
+      }
+
+      final response = await http.post(
+        Uri.parse('$baseUrl/visits-sync'),
+        headers: headers,
+        body: json.encode({'visits': visits}),
+      );
+
+      final data = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        return ApiResponse.fromJson(data, (data) => data as Map<String, dynamic>);
+      } else {
+        return ApiResponse.error(
+          message: data['message'] ?? 'فشل في مزامنة الزيارات',
+          statusCode: response.statusCode,
+        );
+      }
     } catch (e) {
       return _handleError(e);
     }
@@ -242,30 +511,43 @@ class ApiService {
 
   Future<ApiResponse<Map<String, dynamic>>> getOfflineData() async {
     try {
-      final response = await _dio.get('/mobile/offline-data');
-      return ApiResponse.fromJson(response.data);
+      final headers = Map<String, String>.from(defaultHeaders);
+      final token = StorageService.instance.getAccessToken();
+      if (token != null) {
+        headers['Authorization'] = 'Bearer $token';
+      }
+
+      final response = await http.get(
+        Uri.parse('$baseUrl/mobile/offline-data'),
+        headers: headers,
+      );
+
+      final data = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        return ApiResponse.fromJson(data, (data) => data as Map<String, dynamic>);
+      } else {
+        return ApiResponse.error(
+          message: data['message'] ?? 'فشل في جلب البيانات المحلية',
+          statusCode: response.statusCode,
+        );
+      }
     } catch (e) {
       return _handleError(e);
     }
   }
 
-  // File upload
+  // File upload (simplified - requires multipart support)
   Future<ApiResponse<List<String>>> uploadFiles(
-    String endpoint, 
+    String endpoint,
     List<File> files
   ) async {
     try {
-      final formData = FormData();
-      
-      for (int i = 0; i < files.length; i++) {
-        formData.files.add(MapEntry(
-          'files[]',
-          await MultipartFile.fromFile(files[i].path),
-        ));
-      }
-
-      final response = await _dio.post(endpoint, data: formData);
-      return ApiResponse.fromJson(response.data);
+      // Note: This is a simplified implementation
+      // For full multipart support, consider using dio or http_parser
+      return ApiResponse.error(
+        message: 'رفع الملفات غير مدعوم في هذا الإصدار المبسط',
+      );
     } catch (e) {
       return _handleError(e);
     }
@@ -273,122 +555,162 @@ class ApiService {
 
   // Connectivity check
   Future<bool> hasInternetConnection() async {
-    final connectivityResult = await Connectivity().checkConnectivity();
-    return connectivityResult != ConnectivityResult.none;
+    try {
+      final response = await http.get(
+        Uri.parse('https://www.google.com'),
+      ).timeout(const Duration(seconds: 5));
+
+      return response.statusCode == 200;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // Demo login method for testing
+  Future<ApiResponse<Map<String, dynamic>?>> loginDemo() async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/mobile/login'),
+        headers: defaultHeaders,
+        body: json.encode({
+          'email': 'admin@maxcon-erp.com',
+          'password': 'MaxCon@2025',
+          'device_id': 'flutter_demo_device',
+        }),
+      );
+
+      final data = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        final result = ApiResponse.fromJson(data, (data) => data as Map<String, dynamic>);
+        if (result.success && result.data != null) {
+          final token = result.data!['access_token'];
+          if (token != null) {
+            await StorageService.instance.saveAccessToken(token);
+          }
+        }
+        return result;
+      } else {
+        return ApiResponse.error(
+          message: data['message'] ?? 'فشل في تسجيل الدخول التجريبي',
+          statusCode: response.statusCode,
+        );
+      }
+    } catch (e) {
+      return _handleError(e);
+    }
+  }
+
+  // Sales Representatives methods
+  Future<ApiResponse<List<Map<String, dynamic>>>> getSalesReps({
+    int page = 1,
+    int perPage = 20,
+    String? search,
+  }) async {
+    try {
+      // First try to get a demo token if we don't have one
+      final token = StorageService.instance.getAccessToken();
+      if (token == null) {
+        final loginResult = await loginDemo();
+        if (!loginResult.success) {
+          return ApiResponse.error(
+            message: 'فشل في الحصول على token للاختبار'
+          );
+        }
+      }
+
+      final headers = Map<String, String>.from(defaultHeaders);
+      final currentToken = StorageService.instance.getAccessToken();
+      if (currentToken != null) {
+        headers['Authorization'] = 'Bearer $currentToken';
+      }
+
+      final queryParams = <String, String>{
+        'page': page.toString(),
+        'per_page': perPage.toString(),
+      };
+      if (search != null) queryParams['search'] = search;
+
+      final uri = Uri.parse('$baseUrl/sales-reps').replace(queryParameters: queryParams);
+      final response = await http.get(uri, headers: headers);
+
+      final data = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        return ApiResponse.fromJson(data, (data) {
+          if (data is List) {
+            return data.cast<Map<String, dynamic>>();
+          }
+          return <Map<String, dynamic>>[];
+        });
+      } else {
+        return ApiResponse.error(
+          message: data['message'] ?? 'فشل في جلب المندوبين',
+          statusCode: response.statusCode,
+        );
+      }
+    } catch (e) {
+      return _handleError(e);
+    }
+  }
+
+  // Test API connection
+  Future<ApiResponse<Map<String, dynamic>>> testConnection() async {
+    try {
+      // Try to login first
+      final loginResult = await loginDemo();
+      if (!loginResult.success) {
+        return ApiResponse.error(
+          message: loginResult.message,
+          data: <String, dynamic>{}
+        );
+      }
+
+      // Then test the sales-reps endpoint
+      final headers = Map<String, String>.from(defaultHeaders);
+      final token = StorageService.instance.getAccessToken();
+      if (token != null) {
+        headers['Authorization'] = 'Bearer $token';
+      }
+
+      final response = await http.get(
+        Uri.parse('$baseUrl/sales-reps?page=1&per_page=1'),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        return ApiResponse.success(
+          message: 'تم الاتصال بنجاح',
+          data: {
+            'status': 'connected',
+            'endpoint': '/sales-reps',
+            'response_code': response.statusCode,
+          }
+        );
+      } else {
+        return ApiResponse.error(
+          message: 'فشل في اختبار الاتصال',
+          statusCode: response.statusCode,
+        );
+      }
+    } catch (e) {
+      return _handleError(e);
+    }
   }
 
   // Error handling
   ApiResponse<T> _handleError<T>(dynamic error) {
     String message = 'حدث خطأ غير متوقع';
-    
-    if (error is DioException) {
-      switch (error.type) {
-        case DioExceptionType.connectionTimeout:
-        case DioExceptionType.receiveTimeout:
-          message = 'انتهت مهلة الاتصال';
-          break;
-        case DioExceptionType.connectionError:
-          message = 'لا يوجد اتصال بالإنترنت';
-          break;
-        case DioExceptionType.badResponse:
-          if (error.response?.data != null) {
-            final data = error.response!.data;
-            if (data is Map && data.containsKey('message')) {
-              message = data['message'];
-            }
-          }
-          break;
-        default:
-          message = 'حدث خطأ في الشبكة';
-      }
+
+    if (error is SocketException) {
+      message = 'لا يوجد اتصال بالإنترنت';
+    } else if (error is FormatException) {
+      message = 'خطأ في تنسيق البيانات';
+    } else if (error is Exception) {
+      message = error.toString();
     }
 
     Logger.error('API Error: $error');
-    return ApiResponse(success: false, message: message);
-  }
-}
-
-// Interceptors
-class _AuthInterceptor extends Interceptor {
-  @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-    final token = await StorageService.instance.getAccessToken();
-    if (token != null) {
-      options.headers['Authorization'] = 'Bearer $token';
-    }
-    
-    final deviceId = await StorageService.instance.getDeviceId();
-    if (deviceId != null) {
-      options.headers['Device-ID'] = deviceId;
-    }
-    
-    options.headers['App-Version'] = AppConfig.appVersion;
-    
-    handler.next(options);
-  }
-
-  @override
-  void onError(DioException err, ErrorInterceptorHandler handler) async {
-    if (err.response?.statusCode == 401) {
-      // Token expired, try to refresh
-      final refreshResult = await ApiService.instance.refreshToken();
-      if (refreshResult.success && refreshResult.data != null) {
-        final newToken = refreshResult.data!['access_token'];
-        await StorageService.instance.saveAccessToken(newToken);
-        
-        // Retry the original request
-        final options = err.requestOptions;
-        options.headers['Authorization'] = 'Bearer $newToken';
-        
-        try {
-          final response = await Dio().fetch(options);
-          handler.resolve(response);
-          return;
-        } catch (e) {
-          // If retry fails, continue with original error
-        }
-      }
-      
-      // Refresh failed, logout user
-      await StorageService.instance.clearAuthData();
-    }
-    
-    handler.next(err);
-  }
-}
-
-class _LoggingInterceptor extends Interceptor {
-  @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    Logger.info('API Request: ${options.method} ${options.path}');
-    handler.next(options);
-  }
-
-  @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) {
-    Logger.info('API Response: ${response.statusCode} ${response.requestOptions.path}');
-    handler.next(response);
-  }
-
-  @override
-  void onError(DioException err, ErrorInterceptorHandler handler) {
-    Logger.error('API Error: ${err.message}');
-    handler.next(err);
-  }
-}
-
-class _ErrorInterceptor extends Interceptor {
-  @override
-  void onError(DioException err, ErrorInterceptorHandler handler) {
-    // Handle specific error cases
-    if (err.response?.statusCode == 422) {
-      // Validation errors
-      final data = err.response?.data;
-      if (data is Map && data.containsKey('errors')) {
-        // Handle validation errors
-      }
-    }
-    
-    handler.next(err);
+    return ApiResponse.error(message: message);
   }
 }
