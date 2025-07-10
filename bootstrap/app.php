@@ -58,5 +58,33 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        // Temporary fix for highlight_file() issue in Symfony ErrorHandler
+        if (!function_exists('highlight_file')) {
+            // Define a dummy highlight_file function if it doesn't exist
+            function highlight_file($filename, $return = false) {
+                $content = file_get_contents($filename);
+                $highlighted = '<pre>' . htmlspecialchars($content) . '</pre>';
+
+                if ($return) {
+                    return $highlighted;
+                } else {
+                    echo $highlighted;
+                    return true;
+                }
+            }
+        }
+
+        if (!function_exists('highlight_string')) {
+            // Define a dummy highlight_string function if it doesn't exist
+            function highlight_string($str, $return = false) {
+                $highlighted = '<pre>' . htmlspecialchars($str) . '</pre>';
+
+                if ($return) {
+                    return $highlighted;
+                } else {
+                    echo $highlighted;
+                    return true;
+                }
+            }
+        }
     })->create();

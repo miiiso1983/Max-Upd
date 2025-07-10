@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار الخادم - MaxCon SaaS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 50px;
+            margin: 0;
+        }
+        .container {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            margin: 0 auto;
+            backdrop-filter: blur(10px);
+        }
+        h1 { font-size: 3em; margin-bottom: 20px; }
+        p { font-size: 1.2em; line-height: 1.6; }
+        .success { color: #4CAF50; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 MaxCon SaaS</h1>
+        <p class="success">✅ الخادم يعمل بنجاح!</p>
+        <p>إذا كنت ترى هذه الصفحة، فهذا يعني أن مشكلة 401 تم حلها.</p>
+        <p><strong>التاريخ والوقت:</strong> <span id="datetime"></span></p>
+        <p><strong>الخادم:</strong> Cloudways</p>
+        <p><strong>النظام:</strong> MaxCon SaaS ERP</p>
+        
+        <div style="margin-top: 30px;">
+            <a href="index-temp.php" style="background: white; color: #667eea; padding: 15px 30px; text-decoration: none; border-radius: 10px; font-weight: bold;">🏠 الصفحة الرئيسية</a>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('datetime').textContent = new Date().toLocaleString('ar-IQ');
+    </script>
+</body>
+</html>
