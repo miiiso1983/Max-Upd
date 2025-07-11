@@ -3085,6 +3085,19 @@ Route::middleware(['auth'])->group(function () {
         })->name('compliance.index');
     });
 
+    // Profile Routes
+    Route::get('/profile', function() {
+        return view('dashboard.test', [
+            'stats' => [
+                'total_revenue' => 0,
+                'total_customers' => 0,
+                'total_products' => 0,
+                'pending_orders' => 0,
+            ],
+            'message' => 'الملف الشخصي - إدارة معلومات المستخدم الشخصية'
+        ]);
+    })->name('profile.edit');
+
     // Notifications
     Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
 

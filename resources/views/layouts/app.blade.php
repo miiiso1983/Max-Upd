@@ -610,12 +610,12 @@
                     <h3>إدارة النظام العامة</h3>
                 </div>
 
-                <a href="{{ route('super-admin.dashboard') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('super-admin.dashboard') ? 'active' : '' }}">
+                <a href="{{ route('master-admin.dashboard') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('master-admin.dashboard') ? 'active' : '' }}">
                     <i class="fas fa-crown ml-3 text-lg"></i>
                     <span class="font-medium">لوحة المستأجرين</span>
                 </a>
 
-                <a href="{{ route('super-admin.tenants.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('super-admin.tenants.*') ? 'active' : '' }}">
+                <a href="{{ route('master-admin.tenants.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('master-admin.tenants.*') ? 'active' : '' }}">
                     <i class="fas fa-building ml-3 text-lg"></i>
                     <span class="font-medium">إدارة المستأجرين</span>
                 </a>
