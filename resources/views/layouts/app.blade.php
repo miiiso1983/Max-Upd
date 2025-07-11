@@ -101,60 +101,140 @@
         }
         
         .sidebar-gradient {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #1d4ed8 100%);
+            box-shadow: 4px 0 20px rgba(30, 58, 138, 0.3);
         }
 
-        /* Sidebar Hover Effects */
+        /* Advanced Sidebar Styling */
+        .sidebar-gradient nav a {
+            position: relative;
+            border-radius: 12px;
+            margin: 2px 8px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .sidebar-gradient nav a:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 197, 253, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-gradient nav a:hover:before {
+            opacity: 1;
+        }
+
         .sidebar-gradient nav a:hover {
-            color: #6f42c1 !important;
-            background: rgba(111, 66, 193, 0.1) !important;
-            transition: all 0.3s ease;
-            transform: translateX(-5px);
+            background: rgba(59, 130, 246, 0.15) !important;
+            transform: translateX(-8px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.2);
+            border-left: 4px solid #3b82f6;
         }
 
         .sidebar-gradient nav a:hover i {
-            color: #6f42c1 !important;
-            transition: color 0.3s ease;
+            color: #60a5fa !important;
+            transform: scale(1.1);
+            transition: all 0.3s ease;
         }
 
         .sidebar-gradient nav a:hover span {
-            color: #6f42c1 !important;
-            transition: color 0.3s ease;
+            color: #dbeafe !important;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
 
-        /* Section titles hover */
-        .sidebar-gradient nav .text-purple-200:hover {
-            color: #6f42c1 !important;
-            transition: color 0.3s ease;
-            cursor: pointer;
+        /* Active state styling */
+        .sidebar-gradient nav a.active {
+            background: rgba(59, 130, 246, 0.2) !important;
+            border-left: 4px solid #3b82f6;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
         }
 
-        /* Active state enhancement */
-        .sidebar-gradient nav a.bg-white.bg-opacity-20:hover {
-            background: rgba(111, 66, 193, 0.2) !important;
-            border-right-color: #6f42c1 !important;
+        .sidebar-gradient nav a.active i {
+            color: #60a5fa !important;
         }
 
-        /* Logo area hover */
-        .sidebar-gradient .flex.items-center.space-x-3:hover h3 {
-            color: #6f42c1 !important;
-            transition: color 0.3s ease;
-        }
-
-        .sidebar-gradient .flex.items-center.space-x-3:hover p {
-            color: #6f42c1 !important;
-            transition: color 0.3s ease;
-        }
-
-        /* Icon background hover */
-        .sidebar-gradient .w-10.h-10.bg-white:hover {
-            background: #6f42c1 !important;
-            transition: background 0.3s ease;
+        .sidebar-gradient nav a.active span {
+            color: #dbeafe !important;
+            font-weight: 600;
         }
 
         .sidebar-gradient .w-10.h-10.bg-white:hover i {
             color: white !important;
             transition: color 0.3s ease;
+        }
+
+        /* Section headers */
+        .sidebar-section-header {
+            background: rgba(30, 58, 138, 0.3);
+            border-radius: 8px;
+            margin: 8px;
+            padding: 8px 16px;
+            border-left: 3px solid #3b82f6;
+        }
+
+        .sidebar-section-header h3 {
+            color: #93c5fd;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Logo area styling */
+        .sidebar-logo {
+            background: rgba(30, 58, 138, 0.2);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 16px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .sidebar-logo:hover {
+            background: rgba(30, 58, 138, 0.3);
+            transform: scale(1.02);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-logo .logo-icon {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Submenu styling */
+        .sidebar-submenu {
+            margin-left: 20px;
+            border-left: 2px solid rgba(59, 130, 246, 0.2);
+            padding-left: 8px;
+        }
+
+        .sidebar-submenu a {
+            font-size: 0.875rem;
+            padding: 8px 12px;
+        }
+
+        /* Scrollbar styling */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: rgba(30, 58, 138, 0.1);
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(59, 130, 246, 0.3);
+            border-radius: 3px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(59, 130, 246, 0.5);
         }
 
         /* Top Navigation Hover Effects */
@@ -244,410 +324,333 @@
     <div class="flex h-screen">
         <!-- Sidebar -->
         <div class="sidebar w-64 sidebar-gradient text-white flex-shrink-0 overflow-y-auto lg:relative lg:translate-x-0" id="sidebar">
-            <div class="p-6">
+            <!-- Logo Section -->
+            <div class="sidebar-logo">
                 <div class="flex items-center space-x-3 space-x-reverse">
-                    <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-                        <i class="fas fa-chart-line text-purple-600 text-lg"></i>
+                    <div class="w-12 h-12 logo-icon rounded-xl flex items-center justify-center">
+                        <i class="fas fa-chart-line text-white text-xl"></i>
                     </div>
                     <div>
-                        <h1 class="text-xl font-bold">MaxCon ERP</h1>
-                        <p class="text-purple-200 text-sm">نظام إدارة الموارد المتكامل</p>
+                        <h1 class="text-xl font-bold text-white">MaxCon ERP</h1>
+                        <p class="text-blue-200 text-sm">نظام إدارة الموارد المتكامل</p>
                     </div>
                 </div>
             </div>
             
-            <nav class="mt-8">
-                <div class="px-6 py-3">
-                    <p class="text-purple-200 text-xs uppercase tracking-wider font-semibold">القائمة الرئيسية</p>
+            <!-- Navigation -->
+            <nav class="mt-4 pb-8">
+                <!-- Dashboard -->
+                <div class="sidebar-section-header">
+                    <h3>القائمة الرئيسية</h3>
                 </div>
-                
-                <a href="{{ route('dashboard') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('dashboard') ? 'bg-white bg-opacity-20 border-r-4 border-white' : '' }}">
-                    <i class="fas fa-tachometer-alt ml-3"></i>
-                    <span>لوحة التحكم</span>
+
+                <a href="{{ route('dashboard') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                    <i class="fas fa-tachometer-alt ml-3 text-lg"></i>
+                    <span class="font-medium">لوحة التحكم</span>
                 </a>
                 
-                <!-- Sales Menu -->
-                <div class="mt-4">
-                    <div class="px-6 py-3">
-                        <p class="text-purple-200 text-xs uppercase tracking-wider font-semibold">المبيعات</p>
-                    </div>
-                    
-                    <a href="{{ route('sales.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('sales.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-chart-line ml-3"></i>
-                        <span>لوحة المبيعات</span>
-                    </a>
-                    
-                    <a href="{{ route('sales.customers.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('sales.customers.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-users ml-3"></i>
-                        <span>العملاء</span>
-                    </a>
-
-                    <a href="{{ route('sales-reps.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('sales-reps.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-user-tie ml-3"></i>
-                        <span>مندوبي المبيعات</span>
-                    </a>
-
-                    <a href="{{ route('sales.orders.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('sales.orders.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-shopping-cart ml-3"></i>
-                        <span>طلبات المبيعات</span>
-                    </a>
-                    
-                    <a href="{{ route('sales.invoices.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('sales.invoices.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-file-invoice ml-3"></i>
-                        <span>الفواتير</span>
-                    </a>
-                    
-                    <a href="{{ route('sales.payments.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('sales.payments.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-credit-card ml-3"></i>
-                        <span>المدفوعات</span>
-                    </a>
+                <!-- Sales Section -->
+                <div class="sidebar-section-header">
+                    <h3>إدارة المبيعات</h3>
                 </div>
+
+                <a href="{{ route('sales.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('sales.index') ? 'active' : '' }}">
+                    <i class="fas fa-chart-line ml-3 text-lg"></i>
+                    <span class="font-medium">لوحة المبيعات</span>
+                </a>
+
+                <a href="{{ route('sales.customers.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('sales.customers.*') ? 'active' : '' }}">
+                    <i class="fas fa-users ml-3 text-lg"></i>
+                    <span class="font-medium">إدارة العملاء</span>
+                </a>
+
+                <a href="{{ route('sales-reps.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('sales-reps.*') ? 'active' : '' }}">
+                    <i class="fas fa-user-tie ml-3 text-lg"></i>
+                    <span class="font-medium">مندوبي المبيعات</span>
+                </a>
+
+                <a href="{{ route('sales.orders.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('sales.orders.*') ? 'active' : '' }}">
+                    <i class="fas fa-shopping-cart ml-3 text-lg"></i>
+                    <span class="font-medium">طلبات المبيعات</span>
+                </a>
+
+                <a href="{{ route('sales.invoices.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('sales.invoices.*') ? 'active' : '' }}">
+                    <i class="fas fa-file-invoice-dollar ml-3 text-lg"></i>
+                    <span class="font-medium">الفواتير</span>
+                </a>
+
+                <a href="{{ route('sales.payments.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('sales.payments.*') ? 'active' : '' }}">
+                    <i class="fas fa-credit-card ml-3 text-lg"></i>
+                    <span class="font-medium">المدفوعات</span>
+                </a>
                 
-                <!-- Inventory Menu -->
-                <div class="mt-4">
-                    <div class="px-6 py-3">
-                        <p class="text-purple-200 text-xs uppercase tracking-wider font-semibold">المخزون</p>
-                    </div>
-                    
-                    <a href="{{ route('inventory.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('inventory.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-boxes ml-3"></i>
-                        <span>لوحة المخزون</span>
-                    </a>
-                    
-                    <a href="{{ route('inventory.products.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('inventory.products.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-box ml-3"></i>
-                        <span>المنتجات</span>
-                    </a>
+                <!-- Inventory Section -->
+                <div class="sidebar-section-header">
+                    <h3>إدارة المخزون</h3>
                 </div>
 
-                <!-- Suppliers Menu -->
-                <div class="mt-4">
-                    <div class="px-6 py-3">
-                        <p class="text-purple-200 text-xs uppercase tracking-wider font-semibold">الموردين</p>
-                    </div>
+                <a href="{{ route('inventory.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('inventory.index') ? 'active' : '' }}">
+                    <i class="fas fa-warehouse ml-3 text-lg"></i>
+                    <span class="font-medium">لوحة المخزون</span>
+                </a>
 
-                    <a href="{{ route('suppliers.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('suppliers.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-truck ml-3"></i>
-                        <span>الموردين</span>
-                    </a>
+                <a href="{{ route('inventory.products.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('inventory.products.*') ? 'active' : '' }}">
+                    <i class="fas fa-boxes ml-3 text-lg"></i>
+                    <span class="font-medium">إدارة المنتجات</span>
+                </a>
 
-                    <a href="{{ route('purchase-orders.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('purchase-orders.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-shopping-cart ml-3"></i>
-                        <span>طلبات الشراء</span>
-                    </a>
+                <a href="{{ route('inventory.warehouses.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('inventory.warehouses.*') ? 'active' : '' }}">
+                    <i class="fas fa-building ml-3 text-lg"></i>
+                    <span class="font-medium">المستودعات</span>
+                </a>
+
+                <!-- Suppliers Section -->
+                <div class="sidebar-section-header">
+                    <h3>الموردين والمشتريات</h3>
                 </div>
 
-                <!-- Accounting Menu - Advanced -->
-                <div class="mt-4">
-                    <div class="px-6 py-3">
-                        <p class="text-purple-200 text-xs uppercase tracking-wider font-semibold">المحاسبة المتقدمة</p>
-                    </div>
+                <a href="{{ route('suppliers.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('suppliers.*') ? 'active' : '' }}">
+                    <i class="fas fa-truck ml-3 text-lg"></i>
+                    <span class="font-medium">إدارة الموردين</span>
+                </a>
 
-                    <a href="{{ route('accounting.dashboard') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('accounting.dashboard') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-calculator ml-3"></i>
-                        <span>لوحة المحاسبة</span>
-                    </a>
+                <a href="{{ route('purchase-orders.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('purchase-orders.*') ? 'active' : '' }}">
+                    <i class="fas fa-shopping-bag ml-3 text-lg"></i>
+                    <span class="font-medium">طلبات الشراء</span>
+                </a>
 
-                    <a href="{{ route('accounting.chart-of-accounts.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('accounting.chart-of-accounts.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-list-alt ml-3"></i>
-                        <span>دليل الحسابات</span>
-                    </a>
-
-                    <a href="{{ route('accounting.journal-entries.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('accounting.journal-entries.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-book ml-3"></i>
-                        <span>القيود المحاسبية</span>
-                    </a>
-
-                    <a href="{{ route('accounting.financial-reports.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('accounting.financial-reports.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-chart-pie ml-3"></i>
-                        <span>التقارير المالية</span>
-                    </a>
+                <!-- Accounting Section -->
+                <div class="sidebar-section-header">
+                    <h3>المحاسبة والمالية</h3>
                 </div>
 
-                <!-- Regulatory Affairs Menu -->
-                <div class="mt-4">
-                    <div class="px-6 py-3">
-                        <p class="text-purple-200 text-xs uppercase tracking-wider font-semibold">الشؤون التنظيمية</p>
-                    </div>
+                <a href="{{ route('accounting.dashboard') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('accounting.dashboard') ? 'active' : '' }}">
+                    <i class="fas fa-calculator ml-3 text-lg"></i>
+                    <span class="font-medium">لوحة المحاسبة</span>
+                </a>
 
-                    <a href="{{ route('regulatory-affairs.dashboard') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('regulatory-affairs.dashboard') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-clipboard-check ml-3"></i>
-                        <span>لوحة الشؤون التنظيمية</span>
-                    </a>
+                <a href="{{ route('accounting.chart-of-accounts.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('accounting.chart-of-accounts.*') ? 'active' : '' }}">
+                    <i class="fas fa-sitemap ml-3 text-lg"></i>
+                    <span class="font-medium">دليل الحسابات</span>
+                </a>
 
-                    <a href="{{ route('regulatory-affairs.companies.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('regulatory-affairs.companies.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-building ml-3"></i>
-                        <span>تسجيل الشركات</span>
-                    </a>
+                <a href="{{ route('accounting.journal-entries.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('accounting.journal-entries.*') ? 'active' : '' }}">
+                    <i class="fas fa-book ml-3 text-lg"></i>
+                    <span class="font-medium">القيود المحاسبية</span>
+                </a>
 
-                    <a href="{{ route('regulatory-affairs.products.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('regulatory-affairs.products.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-pills ml-3"></i>
-                        <span>تصنيف المنتجات</span>
-                    </a>
+                <a href="{{ route('accounting.financial-reports.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('accounting.financial-reports.*') ? 'active' : '' }}">
+                    <i class="fas fa-chart-pie ml-3 text-lg"></i>
+                    <span class="font-medium">التقارير المالية</span>
+                </a>
 
-                    <a href="{{ route('regulatory-affairs.tests.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('regulatory-affairs.tests.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-flask ml-3"></i>
-                        <span>الفحوصات الدوائية</span>
-                    </a>
+                <a href="{{ route('accounting.reports.trial-balance') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('accounting.reports.trial-balance') ? 'active' : '' }}">
+                    <i class="fas fa-balance-scale ml-3 text-lg"></i>
+                    <span class="font-medium">ميزان المراجعة</span>
+                </a>
+
+                <!-- Regulatory Affairs Section -->
+                <div class="sidebar-section-header">
+                    <h3>الشؤون التنظيمية</h3>
                 </div>
 
-                <!-- Analytics Menu - Advanced -->
-                <div class="mt-4">
-                    <div class="px-6 py-3">
-                        <p class="text-purple-200 text-xs uppercase tracking-wider font-semibold">التحليلات الذكية</p>
-                    </div>
+                <a href="{{ route('regulatory-affairs.dashboard') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('regulatory-affairs.dashboard') ? 'active' : '' }}">
+                    <i class="fas fa-clipboard-check ml-3 text-lg"></i>
+                    <span class="font-medium">لوحة الشؤون التنظيمية</span>
+                </a>
 
-                    <a href="{{ route('analytics.dashboard') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('analytics.dashboard') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-brain ml-3"></i>
-                        <span>لوحة التحليلات</span>
-                    </a>
+                <a href="{{ route('regulatory-affairs.companies.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('regulatory-affairs.companies.*') ? 'active' : '' }}">
+                    <i class="fas fa-building ml-3 text-lg"></i>
+                    <span class="font-medium">تسجيل الشركات الدوائية</span>
+                </a>
 
-                    <a href="{{ route('analytics.sales-prediction') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('analytics.sales-prediction') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-chart-line ml-3"></i>
-                        <span>توقعات المبيعات</span>
-                    </a>
+                <a href="{{ route('regulatory-affairs.products.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('regulatory-affairs.products.*') ? 'active' : '' }}">
+                    <i class="fas fa-pills ml-3 text-lg"></i>
+                    <span class="font-medium">تصنيف المنتجات الدوائية</span>
+                </a>
 
-                    <a href="{{ route('analytics.business-intelligence') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('analytics.business-intelligence') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-chart-bar ml-3"></i>
-                        <span>ذكاء الأعمال</span>
-                    </a>
+                <a href="{{ route('regulatory-affairs.tests.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('regulatory-affairs.tests.*') ? 'active' : '' }}">
+                    <i class="fas fa-flask ml-3 text-lg"></i>
+                    <span class="font-medium">الفحوصات الدوائية</span>
+                </a>
+
+                <a href="{{ route('regulatory-affairs.inspections.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('regulatory-affairs.inspections.*') ? 'active' : '' }}">
+                    <i class="fas fa-search ml-3 text-lg"></i>
+                    <span class="font-medium">التفتيش والمراقبة</span>
+                </a>
+
+                <!-- Analytics Section -->
+                <div class="sidebar-section-header">
+                    <h3>التحليلات الذكية</h3>
                 </div>
 
-                    <a href="{{ route('accounting.chart-of-accounts.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('accounting.chart-of-accounts.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-sitemap ml-3"></i>
-                        <span>دليل الحسابات</span>
-                    </a>
+                <a href="{{ route('analytics.dashboard') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('analytics.dashboard') ? 'active' : '' }}">
+                    <i class="fas fa-brain ml-3 text-lg"></i>
+                    <span class="font-medium">لوحة التحليلات الذكية</span>
+                </a>
 
-                    <a href="{{ route('accounting.journal-entries.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('accounting.journal-entries.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-book ml-3"></i>
-                        <span>القيود اليومية</span>
-                    </a>
+                <a href="{{ route('analytics.sales-prediction') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('analytics.sales-prediction') ? 'active' : '' }}">
+                    <i class="fas fa-chart-line ml-3 text-lg"></i>
+                    <span class="font-medium">توقعات المبيعات</span>
+                </a>
 
-                    <a href="{{ route('accounting.financial-reports.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('accounting.financial-reports.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-file-invoice-dollar ml-3"></i>
-                        <span>التقارير المالية</span>
-                    </a>
+                <a href="{{ route('analytics.business-intelligence') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('analytics.business-intelligence') ? 'active' : '' }}">
+                    <i class="fas fa-chart-bar ml-3 text-lg"></i>
+                    <span class="font-medium">ذكاء الأعمال</span>
+                </a>
+
+                <a href="{{ route('analytics.customer-analytics') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('analytics.customer-analytics') ? 'active' : '' }}">
+                    <i class="fas fa-users-cog ml-3 text-lg"></i>
+                    <span class="font-medium">تحليلات العملاء</span>
+                </a>
+
+                <!-- HR Section -->
+                <div class="sidebar-section-header">
+                    <h3>الموارد البشرية</h3>
                 </div>
 
-                <!-- HR Menu -->
-                <div class="mt-4">
-                    <div class="px-6 py-3">
-                        <p class="text-purple-200 text-xs uppercase tracking-wider font-semibold">الموارد البشرية</p>
-                    </div>
+                <a href="{{ route('hr.employees.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('hr.employees.*') ? 'active' : '' }}">
+                    <i class="fas fa-users ml-3 text-lg"></i>
+                    <span class="font-medium">إدارة الموظفين</span>
+                </a>
 
-                    <a href="{{ route('hr.employees.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('hr.employees.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-users ml-3"></i>
-                        <span>الموظفين</span>
-                    </a>
+                <a href="{{ route('hr.payroll.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('hr.payroll.*') ? 'active' : '' }}">
+                    <i class="fas fa-money-check-alt ml-3 text-lg"></i>
+                    <span class="font-medium">الرواتب والأجور</span>
+                </a>
 
-                    <a href="{{ route('hr.payroll.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('hr.payroll.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-money-check-alt ml-3"></i>
-                        <span>الرواتب</span>
-                    </a>
+                <a href="{{ route('hr.attendance.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('hr.attendance.*') ? 'active' : '' }}">
+                    <i class="fas fa-clock ml-3 text-lg"></i>
+                    <span class="font-medium">الحضور والانصراف</span>
+                </a>
 
-                    <a href="{{ route('hr.attendance.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('hr.attendance.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-clock ml-3"></i>
-                        <span>الحضور والانصراف</span>
-                    </a>
+                <!-- Advanced User Management Section -->
+                <div class="sidebar-section-header">
+                    <h3>إدارة المستخدمين المتقدمة</h3>
                 </div>
 
-                <!-- Advanced User Management Menu -->
-                <div class="mt-4">
-                    <div class="px-6 py-3">
-                        <p class="text-purple-200 text-xs uppercase tracking-wider font-semibold">إدارة المستخدمين المتقدمة</p>
-                    </div>
+                <a href="{{ route('admin.advanced.users.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('admin.advanced.users.index') ? 'active' : '' }}">
+                    <i class="fas fa-users-cog ml-3 text-lg"></i>
+                    <span class="font-medium">إدارة المستخدمين</span>
+                </a>
 
-                    <a href="{{ route('admin.advanced.users.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('admin.advanced.users.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-users-cog ml-3"></i>
-                        <span>إدارة المستخدمين</span>
-                    </a>
+                <a href="{{ route('admin.users.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+                    <i class="fas fa-user-friends ml-3 text-lg"></i>
+                    <span class="font-medium">المستخدمين</span>
+                </a>
 
-                    <a href="{{ route('admin.advanced.users.bulk-actions') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('admin.advanced.users.bulk-actions') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-tasks ml-3"></i>
-                        <span>العمليات المجمعة</span>
-                    </a>
+                <a href="{{ route('admin.roles.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">
+                    <i class="fas fa-user-tag ml-3 text-lg"></i>
+                    <span class="font-medium">الأدوار والصلاحيات</span>
+                </a>
 
-                    <a href="{{ route('admin.advanced.users.activity-log') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('admin.advanced.users.activity-log') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-history ml-3"></i>
-                        <span>سجل النشاطات</span>
-                    </a>
+                <a href="{{ route('admin.advanced.security.advanced') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('admin.advanced.security.*') ? 'active' : '' }}">
+                    <i class="fas fa-shield-alt ml-3 text-lg"></i>
+                    <span class="font-medium">الأمان المتقدم</span>
+                </a>
 
-                    <a href="{{ route('admin.advanced.security.advanced') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('admin.advanced.security.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-shield-alt ml-3"></i>
-                        <span>الأمان المتقدم</span>
-                    </a>
+                <a href="{{ route('admin.advanced.audit.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('admin.advanced.audit.*') ? 'active' : '' }}">
+                    <i class="fas fa-search ml-3 text-lg"></i>
+                    <span class="font-medium">سجل التدقيق</span>
+                </a>
 
-                    <a href="{{ route('admin.advanced.audit.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('admin.advanced.audit.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-search ml-3"></i>
-                        <span>سجل التدقيق</span>
-                    </a>
-
-                    <a href="{{ route('admin.advanced.compliance.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('admin.advanced.compliance.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-clipboard-check ml-3"></i>
-                        <span>الامتثال والمطابقة</span>
-                    </a>
+                <!-- Medical Representatives Section -->
+                <div class="sidebar-section-header">
+                    <h3>المندوبين الطبيين</h3>
                 </div>
 
-                <!-- Medical Reps Menu -->
-                <div class="mt-4">
-                    <div class="px-6 py-3">
-                        <p class="text-purple-200 text-xs uppercase tracking-wider font-semibold">المندوبين الطبيين</p>
-                    </div>
+                <a href="{{ route('medical-reps.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('medical-reps.index') ? 'active' : '' }}">
+                    <i class="fas fa-user-md ml-3 text-lg"></i>
+                    <span class="font-medium">إدارة المندوبين</span>
+                </a>
 
-                    <a href="{{ route('medical-reps.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('medical-reps.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-user-md ml-3"></i>
-                        <span>المندوبين</span>
-                    </a>
+                <a href="{{ route('medical-reps.territories.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('medical-reps.territories.*') ? 'active' : '' }}">
+                    <i class="fas fa-map-marked-alt ml-3 text-lg"></i>
+                    <span class="font-medium">المناطق الجغرافية</span>
+                </a>
 
-                    <a href="{{ route('medical-reps.territories.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('medical-reps.territories.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-map-marked-alt ml-3"></i>
-                        <span>المناطق</span>
-                    </a>
+                <a href="{{ route('medical-reps.visits.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('medical-reps.visits.*') ? 'active' : '' }}">
+                    <i class="fas fa-calendar-check ml-3 text-lg"></i>
+                    <span class="font-medium">الزيارات الميدانية</span>
+                </a>
 
-                    <a href="{{ route('medical-reps.visits.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('medical-reps.visits.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-calendar-check ml-3"></i>
-                        <span>الزيارات</span>
-                    </a>
+                <a href="{{ route('medical-reps.commissions.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('medical-reps.commissions.*') ? 'active' : '' }}">
+                    <i class="fas fa-percentage ml-3 text-lg"></i>
+                    <span class="font-medium">العمولات والحوافز</span>
+                </a>
 
-                    <a href="{{ route('medical-reps.commissions.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('medical-reps.commissions.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-percentage ml-3"></i>
-                        <span>العمولات</span>
-                    </a>
+                <!-- Reports Section -->
+                <div class="sidebar-section-header">
+                    <h3>التقارير والإحصائيات</h3>
                 </div>
 
-                <!-- Regulatory Affairs Menu -->
-                <div class="mt-4">
-                    <div class="px-6 py-3">
-                        <p class="text-purple-200 text-xs uppercase tracking-wider font-semibold">الشؤون التنظيمية</p>
-                    </div>
+                <a href="{{ route('reports.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('reports.index') ? 'active' : '' }}">
+                    <i class="fas fa-chart-bar ml-3 text-lg"></i>
+                    <span class="font-medium">جميع التقارير</span>
+                </a>
 
-                    <a href="{{ route('regulatory-affairs.dashboard') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('regulatory-affairs.dashboard') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-shield-alt ml-3"></i>
-                        <span>لوحة التحكم</span>
-                    </a>
+                <a href="{{ route('reports.sales') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('reports.sales*') ? 'active' : '' }}">
+                    <i class="fas fa-chart-pie ml-3 text-lg"></i>
+                    <span class="font-medium">تقارير المبيعات</span>
+                </a>
 
-                    <a href="{{ route('regulatory-affairs.companies.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('regulatory-affairs.companies.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-building ml-3"></i>
-                        <span>الشركات الدوائية</span>
-                    </a>
+                <a href="{{ route('reports.inventory') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('reports.inventory*') ? 'active' : '' }}">
+                    <i class="fas fa-boxes ml-3 text-lg"></i>
+                    <span class="font-medium">تقارير المخزون</span>
+                </a>
 
-                    <a href="{{ route('regulatory-affairs.products.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('regulatory-affairs.products.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-pills ml-3"></i>
-                        <span>الأصناف الدوائية</span>
-                    </a>
+                <a href="{{ route('reports.financial.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('reports.financial.*') ? 'active' : '' }}">
+                    <i class="fas fa-file-invoice-dollar ml-3 text-lg"></i>
+                    <span class="font-medium">التقارير المالية</span>
+                </a>
 
-                    <a href="{{ route('regulatory-affairs.batches.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('regulatory-affairs.batches.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-vials ml-3"></i>
-                        <span>الدفعات</span>
-                    </a>
-
-                    <a href="{{ route('regulatory-affairs.tests.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('regulatory-affairs.tests.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-flask ml-3"></i>
-                        <span>الفحوصات</span>
-                    </a>
-
-                    <a href="{{ route('regulatory-affairs.inspections.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('regulatory-affairs.inspections.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-search ml-3"></i>
-                        <span>التفتيشات</span>
-                    </a>
+                <!-- System Administration Section -->
+                @if(auth()->check() && (auth()->user()->hasRole('super_admin') || method_exists(auth()->user(), 'isSuperAdmin') && auth()->user()->isSuperAdmin()))
+                <div class="sidebar-section-header">
+                    <h3>إدارة النظام العامة</h3>
                 </div>
 
-                <!-- Analytics Menu -->
-                <div class="mt-4">
-                    <div class="px-6 py-3">
-                        <p class="text-purple-200 text-xs uppercase tracking-wider font-semibold">التحليلات والذكاء الاصطناعي</p>
-                    </div>
+                <a href="{{ route('super-admin.dashboard') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('super-admin.dashboard') ? 'active' : '' }}">
+                    <i class="fas fa-crown ml-3 text-lg"></i>
+                    <span class="font-medium">لوحة المستأجرين</span>
+                </a>
 
-                    <a href="{{ route('analytics.dashboard') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('analytics.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-brain ml-3"></i>
-                        <span>لوحة التحليلات</span>
-                    </a>
-
-                    <a href="{{ route('analytics.sales-prediction') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('analytics.sales-prediction') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-chart-line ml-3"></i>
-                        <span>توقعات المبيعات</span>
-                    </a>
-
-                    <a href="{{ route('analytics.business-intelligence') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('analytics.business-intelligence') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-lightbulb ml-3"></i>
-                        <span>ذكاء الأعمال</span>
-                    </a>
-                </div>
-
-                <!-- Reports Menu -->
-                <div class="mt-4">
-                    <div class="px-6 py-3">
-                        <p class="text-purple-200 text-xs uppercase tracking-wider font-semibold">التقارير</p>
-                    </div>
-
-                    <a href="{{ route('reports.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('reports.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-chart-bar ml-3"></i>
-                        <span>جميع التقارير</span>
-                    </a>
-
-                    <a href="{{ route('reports.sales') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('reports.sales') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-chart-pie ml-3"></i>
-                        <span>تقارير المبيعات</span>
-                    </a>
-
-                    <a href="{{ route('reports.inventory') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('reports.inventory') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-boxes ml-3"></i>
-                        <span>تقارير المخزون</span>
-                    </a>
-
-                    <a href="{{ route('reports.financial.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('reports.financial.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-file-invoice-dollar ml-3"></i>
-                        <span>التقارير المالية</span>
-                    </a>
-                </div>
-
-                @if(auth()->user()->hasRole('super_admin') || auth()->user()->isSuperAdmin())
-                <!-- Super Admin Menu -->
-                <div class="mt-4">
-                    <div class="px-6 py-3">
-                        <p class="text-purple-200 text-xs uppercase tracking-wider font-semibold">إدارة النظام</p>
-                    </div>
-
-                    <a href="{{ route('super-admin.dashboard') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('super-admin.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-crown ml-3"></i>
-                        <span>لوحة المستأجرين</span>
-                    </a>
-
-                    <a href="{{ route('super-admin.tenants.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('super-admin.tenants.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-building ml-3"></i>
-                        <span>إدارة المستأجرين</span>
-                    </a>
-                </div>
+                <a href="{{ route('super-admin.tenants.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('super-admin.tenants.*') ? 'active' : '' }}">
+                    <i class="fas fa-building ml-3 text-lg"></i>
+                    <span class="font-medium">إدارة المستأجرين</span>
+                </a>
                 @endif
 
-                @if(auth()->user()->hasRole(['admin', 'tenant-admin']))
-                <!-- Admin Menu -->
-                <div class="mt-4">
-                    <div class="px-6 py-3">
-                        <p class="text-purple-200 text-xs uppercase tracking-wider font-semibold">الإدارة</p>
-                    </div>
-
-                    <a href="{{ route('admin.users.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('admin.users.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-users-cog ml-3"></i>
-                        <span>إدارة المستخدمين</span>
-                    </a>
-
-                    <a href="{{ route('admin.roles.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('admin.roles.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-user-tag ml-3"></i>
-                        <span>إدارة الأدوار</span>
-                    </a>
-
-                    <a href="{{ route('admin.permissions.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('admin.permissions.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-key ml-3"></i>
-                        <span>إدارة الصلاحيات</span>
-                    </a>
-
-                    <a href="{{ route('admin.settings.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('admin.settings.*') ? 'bg-white bg-opacity-20' : '' }}">
-                        <i class="fas fa-cogs ml-3"></i>
-                        <span>إعدادات النظام</span>
-                    </a>
+                <!-- Settings & Configuration Section -->
+                <div class="sidebar-section-header">
+                    <h3>الإعدادات والتكوين</h3>
                 </div>
-                @endif
+
+                <a href="{{ route('admin.settings.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
+                    <i class="fas fa-cogs ml-3 text-lg"></i>
+                    <span class="font-medium">إعدادات النظام</span>
+                </a>
+
+                <a href="{{ route('profile.edit') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('profile.*') ? 'active' : '' }}">
+                    <i class="fas fa-user-edit ml-3 text-lg"></i>
+                    <span class="font-medium">الملف الشخصي</span>
+                </a>
+
+                <a href="{{ route('notifications.index') }}" class="flex items-center px-4 py-3 text-white {{ request()->routeIs('notifications.*') ? 'active' : '' }}">
+                    <i class="fas fa-bell ml-3 text-lg"></i>
+                    <span class="font-medium">الإشعارات</span>
+                </a>
+
+                <!-- Logout Section -->
+                <div class="mt-8 px-4">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="flex items-center w-full px-4 py-3 text-white hover:bg-red-600 hover:bg-opacity-20 rounded-lg transition-all duration-300">
+                            <i class="fas fa-sign-out-alt ml-3 text-lg"></i>
+                            <span class="font-medium">تسجيل الخروج</span>
+                        </button>
+                    </form>
+                </div>
             </nav>
         </div>
         
