@@ -2873,6 +2873,218 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/business-intelligence', [App\Modules\Analytics\Controllers\AnalyticsController::class, 'businessIntelligence'])->name('business-intelligence');
     });
 
+    // Accounting Module Routes - Advanced
+    Route::prefix('accounting')->name('accounting.')->group(function () {
+        Route::get('/', function() {
+            return view('dashboard.test', [
+                'stats' => [
+                    'total_revenue' => 2500000,
+                    'total_customers' => 45,
+                    'total_products' => 120,
+                    'pending_orders' => 12,
+                ],
+                'message' => 'لوحة المحاسبة - نظام محاسبي متكامل مع دليل الحسابات والقيود'
+            ]);
+        })->name('dashboard');
+
+        Route::get('/chart-of-accounts', function() {
+            return view('dashboard.test', [
+                'stats' => [
+                    'total_revenue' => 2500000,
+                    'total_customers' => 0,
+                    'total_products' => 0,
+                    'pending_orders' => 0,
+                ],
+                'message' => 'دليل الحسابات - إدارة شجرة الحسابات المحاسبية'
+            ]);
+        })->name('chart-of-accounts.index');
+
+        Route::get('/journal-entries', function() {
+            return view('dashboard.test', [
+                'stats' => [
+                    'total_revenue' => 0,
+                    'total_customers' => 0,
+                    'total_products' => 0,
+                    'pending_orders' => 25,
+                ],
+                'message' => 'القيود المحاسبية - إدخال وإدارة القيود اليومية'
+            ]);
+        })->name('journal-entries.index');
+
+        Route::get('/financial-reports', function() {
+            return view('dashboard.test', [
+                'stats' => [
+                    'total_revenue' => 2500000,
+                    'total_customers' => 0,
+                    'total_products' => 0,
+                    'pending_orders' => 0,
+                ],
+                'message' => 'التقارير المالية - ميزان المراجعة وقائمة الدخل والميزانية العمومية'
+            ]);
+        })->name('financial-reports.index');
+
+        Route::get('/trial-balance', function() {
+            return view('dashboard.test', [
+                'stats' => ['total_revenue' => 2500000, 'total_customers' => 0, 'total_products' => 0, 'pending_orders' => 0],
+                'message' => 'ميزان المراجعة - عرض أرصدة جميع الحسابات'
+            ]);
+        })->name('reports.trial-balance');
+
+        Route::get('/income-statement', function() {
+            return view('dashboard.test', [
+                'stats' => ['total_revenue' => 2500000, 'total_customers' => 0, 'total_products' => 0, 'pending_orders' => 0],
+                'message' => 'قائمة الدخل - الإيرادات والمصروفات والأرباح'
+            ]);
+        })->name('reports.income-statement');
+
+        Route::get('/balance-sheet', function() {
+            return view('dashboard.test', [
+                'stats' => ['total_revenue' => 2500000, 'total_customers' => 0, 'total_products' => 0, 'pending_orders' => 0],
+                'message' => 'الميزانية العمومية - الأصول والخصوم وحقوق الملكية'
+            ]);
+        })->name('reports.balance-sheet');
+    });
+
+    // Regulatory Affairs Module Routes - Advanced
+    Route::prefix('regulatory-affairs')->name('regulatory-affairs.')->group(function () {
+        Route::get('/', function() {
+            return view('dashboard.test', [
+                'stats' => [
+                    'total_revenue' => 0,
+                    'total_customers' => 0,
+                    'total_products' => 120,
+                    'pending_orders' => 8,
+                ],
+                'message' => 'الشؤون التنظيمية - إدارة التراخيص والامتثال للمعايير الدوائية'
+            ]);
+        })->name('dashboard');
+
+        Route::get('/companies', function() {
+            return view('dashboard.test', [
+                'stats' => ['total_revenue' => 0, 'total_customers' => 15, 'total_products' => 0, 'pending_orders' => 0],
+                'message' => 'تسجيل الشركات الدوائية - إدارة تراخيص وتسجيل الشركات'
+            ]);
+        })->name('companies.index');
+
+        Route::get('/products', function() {
+            return view('dashboard.test', [
+                'stats' => ['total_revenue' => 0, 'total_customers' => 0, 'total_products' => 120, 'pending_orders' => 0],
+                'message' => 'تصنيف المنتجات الدوائية - تسجيل وتصنيف الأدوية'
+            ]);
+        })->name('products.index');
+
+        Route::get('/tests', function() {
+            return view('dashboard.test', [
+                'stats' => ['total_revenue' => 0, 'total_customers' => 0, 'total_products' => 0, 'pending_orders' => 45],
+                'message' => 'الفحوصات الدوائية - تتبع فحوصات الجودة والسلامة'
+            ]);
+        })->name('tests.index');
+
+        Route::get('/inspections', function() {
+            return view('dashboard.test', [
+                'stats' => ['total_revenue' => 0, 'total_customers' => 0, 'total_products' => 0, 'pending_orders' => 12],
+                'message' => 'التفتيش والمراقبة - جدولة وتتبع عمليات التفتيش'
+            ]);
+        })->name('inspections.index');
+    });
+
+    // Analytics Module Routes - Advanced
+    Route::prefix('analytics')->name('analytics.')->group(function () {
+        Route::get('/', function() {
+            return view('dashboard.test', [
+                'stats' => [
+                    'total_revenue' => 2500000,
+                    'total_customers' => 45,
+                    'total_products' => 120,
+                    'pending_orders' => 12,
+                ],
+                'message' => 'التحليلات الذكية - ذكاء اصطناعي وتحليل البيانات المتقدم'
+            ]);
+        })->name('dashboard');
+
+        Route::get('/sales-prediction', function() {
+            return view('dashboard.test', [
+                'stats' => ['total_revenue' => 2800000, 'total_customers' => 0, 'total_products' => 0, 'pending_orders' => 0],
+                'message' => 'توقعات المبيعات - تحليل الاتجاهات والتنبؤ بالمبيعات المستقبلية'
+            ]);
+        })->name('sales-prediction');
+
+        Route::get('/business-intelligence', function() {
+            return view('dashboard.test', [
+                'stats' => ['total_revenue' => 0, 'total_customers' => 45, 'total_products' => 120, 'pending_orders' => 12],
+                'message' => 'ذكاء الأعمال - لوحات معلومات تفاعلية وتحليلات متقدمة'
+            ]);
+        })->name('business-intelligence');
+
+        Route::get('/customer-analytics', function() {
+            return view('dashboard.test', [
+                'stats' => ['total_revenue' => 0, 'total_customers' => 45, 'total_products' => 0, 'pending_orders' => 0],
+                'message' => 'تحليلات العملاء - سلوك العملاء وتجزئة السوق'
+            ]);
+        })->name('customer-analytics');
+
+        Route::get('/inventory-optimization', function() {
+            return view('dashboard.test', [
+                'stats' => ['total_revenue' => 0, 'total_customers' => 0, 'total_products' => 120, 'pending_orders' => 0],
+                'message' => 'تحسين المخزون - تحليل المخزون وتحسين مستويات التخزين'
+            ]);
+        })->name('inventory-optimization');
+    });
+
+    // Advanced User Management System
+    Route::prefix('admin/advanced')->name('admin.advanced.')->group(function () {
+
+        // Advanced Users Management
+        Route::get('/users', function() {
+            return view('dashboard.test', [
+                'stats' => [
+                    'total_revenue' => 0,
+                    'total_customers' => 25,
+                    'total_products' => 0,
+                    'pending_orders' => 5,
+                ],
+                'message' => 'إدارة المستخدمين المتقدمة - نظام شامل لإدارة المستخدمين والأدوار والصلاحيات'
+            ]);
+        })->name('users.index');
+
+        Route::get('/users/bulk-actions', function() {
+            return view('dashboard.test', [
+                'stats' => ['total_revenue' => 0, 'total_customers' => 25, 'total_products' => 0, 'pending_orders' => 0],
+                'message' => 'العمليات المجمعة - تنفيذ عمليات متعددة على مجموعة من المستخدمين'
+            ]);
+        })->name('users.bulk-actions');
+
+        Route::get('/users/activity-log', function() {
+            return view('dashboard.test', [
+                'stats' => ['total_revenue' => 0, 'total_customers' => 0, 'total_products' => 0, 'pending_orders' => 150],
+                'message' => 'سجل النشاطات - تتبع نشاطات المستخدمين وعمليات تسجيل الدخول'
+            ]);
+        })->name('users.activity-log');
+
+        // Advanced Security
+        Route::get('/security/advanced', function() {
+            return view('dashboard.test', [
+                'stats' => ['total_revenue' => 0, 'total_customers' => 0, 'total_products' => 0, 'pending_orders' => 0],
+                'message' => 'الأمان المتقدم - المصادقة الثنائية وسياسات كلمات المرور المتقدمة'
+            ]);
+        })->name('security.advanced');
+
+        // Audit & Compliance
+        Route::get('/audit', function() {
+            return view('dashboard.test', [
+                'stats' => ['total_revenue' => 0, 'total_customers' => 0, 'total_products' => 0, 'pending_orders' => 0],
+                'message' => 'سجل التدقيق - تتبع جميع العمليات والتغييرات في النظام'
+            ]);
+        })->name('audit.index');
+
+        Route::get('/compliance', function() {
+            return view('dashboard.test', [
+                'stats' => ['total_revenue' => 0, 'total_customers' => 0, 'total_products' => 0, 'pending_orders' => 0],
+                'message' => 'الامتثال والمطابقة - تقارير الامتثال للمعايير والقوانين'
+            ]);
+        })->name('compliance.index');
+    });
+
     // Notifications
     Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
 

@@ -337,16 +337,81 @@
                     </a>
                 </div>
 
-                <!-- Accounting Menu -->
+                <!-- Accounting Menu - Advanced -->
                 <div class="mt-4">
                     <div class="px-6 py-3">
-                        <p class="text-purple-200 text-xs uppercase tracking-wider font-semibold">المحاسبة</p>
+                        <p class="text-purple-200 text-xs uppercase tracking-wider font-semibold">المحاسبة المتقدمة</p>
                     </div>
 
-                    <a href="{{ route('accounting.dashboard') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('accounting.*') ? 'bg-white bg-opacity-20' : '' }}">
+                    <a href="{{ route('accounting.dashboard') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('accounting.dashboard') ? 'bg-white bg-opacity-20' : '' }}">
                         <i class="fas fa-calculator ml-3"></i>
                         <span>لوحة المحاسبة</span>
                     </a>
+
+                    <a href="{{ route('accounting.chart-of-accounts.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('accounting.chart-of-accounts.*') ? 'bg-white bg-opacity-20' : '' }}">
+                        <i class="fas fa-list-alt ml-3"></i>
+                        <span>دليل الحسابات</span>
+                    </a>
+
+                    <a href="{{ route('accounting.journal-entries.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('accounting.journal-entries.*') ? 'bg-white bg-opacity-20' : '' }}">
+                        <i class="fas fa-book ml-3"></i>
+                        <span>القيود المحاسبية</span>
+                    </a>
+
+                    <a href="{{ route('accounting.financial-reports.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('accounting.financial-reports.*') ? 'bg-white bg-opacity-20' : '' }}">
+                        <i class="fas fa-chart-pie ml-3"></i>
+                        <span>التقارير المالية</span>
+                    </a>
+                </div>
+
+                <!-- Regulatory Affairs Menu -->
+                <div class="mt-4">
+                    <div class="px-6 py-3">
+                        <p class="text-purple-200 text-xs uppercase tracking-wider font-semibold">الشؤون التنظيمية</p>
+                    </div>
+
+                    <a href="{{ route('regulatory-affairs.dashboard') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('regulatory-affairs.dashboard') ? 'bg-white bg-opacity-20' : '' }}">
+                        <i class="fas fa-clipboard-check ml-3"></i>
+                        <span>لوحة الشؤون التنظيمية</span>
+                    </a>
+
+                    <a href="{{ route('regulatory-affairs.companies.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('regulatory-affairs.companies.*') ? 'bg-white bg-opacity-20' : '' }}">
+                        <i class="fas fa-building ml-3"></i>
+                        <span>تسجيل الشركات</span>
+                    </a>
+
+                    <a href="{{ route('regulatory-affairs.products.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('regulatory-affairs.products.*') ? 'bg-white bg-opacity-20' : '' }}">
+                        <i class="fas fa-pills ml-3"></i>
+                        <span>تصنيف المنتجات</span>
+                    </a>
+
+                    <a href="{{ route('regulatory-affairs.tests.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('regulatory-affairs.tests.*') ? 'bg-white bg-opacity-20' : '' }}">
+                        <i class="fas fa-flask ml-3"></i>
+                        <span>الفحوصات الدوائية</span>
+                    </a>
+                </div>
+
+                <!-- Analytics Menu - Advanced -->
+                <div class="mt-4">
+                    <div class="px-6 py-3">
+                        <p class="text-purple-200 text-xs uppercase tracking-wider font-semibold">التحليلات الذكية</p>
+                    </div>
+
+                    <a href="{{ route('analytics.dashboard') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('analytics.dashboard') ? 'bg-white bg-opacity-20' : '' }}">
+                        <i class="fas fa-brain ml-3"></i>
+                        <span>لوحة التحليلات</span>
+                    </a>
+
+                    <a href="{{ route('analytics.sales-prediction') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('analytics.sales-prediction') ? 'bg-white bg-opacity-20' : '' }}">
+                        <i class="fas fa-chart-line ml-3"></i>
+                        <span>توقعات المبيعات</span>
+                    </a>
+
+                    <a href="{{ route('analytics.business-intelligence') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('analytics.business-intelligence') ? 'bg-white bg-opacity-20' : '' }}">
+                        <i class="fas fa-chart-bar ml-3"></i>
+                        <span>ذكاء الأعمال</span>
+                    </a>
+                </div>
 
                     <a href="{{ route('accounting.chart-of-accounts.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('accounting.chart-of-accounts.*') ? 'bg-white bg-opacity-20' : '' }}">
                         <i class="fas fa-sitemap ml-3"></i>
@@ -383,6 +448,43 @@
                     <a href="{{ route('hr.attendance.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('hr.attendance.*') ? 'bg-white bg-opacity-20' : '' }}">
                         <i class="fas fa-clock ml-3"></i>
                         <span>الحضور والانصراف</span>
+                    </a>
+                </div>
+
+                <!-- Advanced User Management Menu -->
+                <div class="mt-4">
+                    <div class="px-6 py-3">
+                        <p class="text-purple-200 text-xs uppercase tracking-wider font-semibold">إدارة المستخدمين المتقدمة</p>
+                    </div>
+
+                    <a href="{{ route('admin.advanced.users.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('admin.advanced.users.*') ? 'bg-white bg-opacity-20' : '' }}">
+                        <i class="fas fa-users-cog ml-3"></i>
+                        <span>إدارة المستخدمين</span>
+                    </a>
+
+                    <a href="{{ route('admin.advanced.users.bulk-actions') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('admin.advanced.users.bulk-actions') ? 'bg-white bg-opacity-20' : '' }}">
+                        <i class="fas fa-tasks ml-3"></i>
+                        <span>العمليات المجمعة</span>
+                    </a>
+
+                    <a href="{{ route('admin.advanced.users.activity-log') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('admin.advanced.users.activity-log') ? 'bg-white bg-opacity-20' : '' }}">
+                        <i class="fas fa-history ml-3"></i>
+                        <span>سجل النشاطات</span>
+                    </a>
+
+                    <a href="{{ route('admin.advanced.security.advanced') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('admin.advanced.security.*') ? 'bg-white bg-opacity-20' : '' }}">
+                        <i class="fas fa-shield-alt ml-3"></i>
+                        <span>الأمان المتقدم</span>
+                    </a>
+
+                    <a href="{{ route('admin.advanced.audit.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('admin.advanced.audit.*') ? 'bg-white bg-opacity-20' : '' }}">
+                        <i class="fas fa-search ml-3"></i>
+                        <span>سجل التدقيق</span>
+                    </a>
+
+                    <a href="{{ route('admin.advanced.compliance.index') }}" class="flex items-center px-6 py-3 text-white hover:bg-white hover:bg-opacity-10 transition-colors {{ request()->routeIs('admin.advanced.compliance.*') ? 'bg-white bg-opacity-20' : '' }}">
+                        <i class="fas fa-clipboard-check ml-3"></i>
+                        <span>الامتثال والمطابقة</span>
                     </a>
                 </div>
 
